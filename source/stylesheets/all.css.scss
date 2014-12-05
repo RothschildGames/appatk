@@ -1,7 +1,8 @@
 @charset "utf-8";
+$background: #d4d4d4;
 
 body {
-  background: #d4d4d4 url("../images/background.png");
+  background: $background url("../images/background.png");
   text-align: center;
   font-family: sans-serif; }
 
