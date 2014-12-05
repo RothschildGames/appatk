@@ -1,43 +1,69 @@
-# console.log("ASD")
-# preload = ->
-#   game.load.image('people', '/small-people.png');
-#
-#
-# create = ->
-#
-# person;
-
-game = new Phaser.Game 800, 600, Phaser.CANVAS, 'phaser-example',
+jumpTimer = 0
+game = new Phaser.Game 600, 300, Phaser.CANVAS, 'phaser-example',
   preload: ->
-    game.load.spritesheet('people', '/images/small-people.png', 16, 16)
+    game.load.spritesheet('indy', '/images/indy.png', 36, 40)
+    game.load.image('background', '/images/room-floor.png');
+    game.load.image('platform', '/images/platform.png');
+
   create: ->
-    person = game.add.sprite(0, 0, 'people')
-    person.anchor.setTo(.5, .5)
-    # person.scale.x = 4
-    person.scale.y = 2
-    window.person = person
-    person.animations.add('walk', [0,1,0,2], 8, true)
+    bg = game.add.tileSprite(0, 0, 1920, 400, 'background');
+
+    game.world.setBounds(0, 0, 1920, 400);
+
+    player = game.add.sprite(0, 0, 'indy')
+    player.anchor.setTo(.5, .5)
+
+    window.player = player
+    player.animations.add('walk', [0,1,2,1], 8, true)
+    player.animations.add('jump', [3], 8, true)
+
+    game.physics.startSystem(Phaser.Physics.ARCADE)
+    # game.physics.arcade.gravity.y = 300;
+
+    game.physics.enable(player, Phaser.Physics.ARCADE);
+    player.body.collideWorldBounds = true;
+    player.body.gravity.y = 1000;
+    player.body.maxVelocity.y = 500;
+
+    platforms = game.add.group()
+    platforms.enableBody = true
+    platforms.physicsBodyType = Phaser.Physics.ARCADE;
+
+    platform = platforms.create(400, 340, 'platform')
+    platform.body.immovable = true;
+
+    platform = platforms.create(500, 300, 'platform')
+    platform.body.immovable = true;
+
+    platform = platforms.create(700, 260, 'platform')
+    platform.body.immovable = true;
+
+    window.platforms = platforms
+
+    cursors = game.input.keyboard.createCursorKeys();
+    window.cursors = cursors
+    game.camera.follow(player)
 
   update: ->
-    walking = false
+    game.physics.arcade.collide(player, platforms);
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
-      person.x += 4
-      person.scale.x = 2
-      walking = true
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
-      person.x -= 4
-      person.scale.x = -2
-      walking = true
+    player.body.velocity.x = 0;
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
-      person.y += 4
-      walking = true
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
-      person.y -= 4
-      walking = true
+    if cursors.left.isDown
+      player.body.velocity.x = -150;
+      player.scale.x = -1
+      player.animations.play('walk') unless player.body.velocity.y != 0
+    else if (cursors.right.isDown)
+      player.body.velocity.x = +150;
+      player.scale.x = +1
+      player.animations.play('walk') unless player.body.velocity.y != 0
+    else if player.body.velocity.y >= 0
+      player.animations.stop()
+      player.frame = 0
 
-    if walking
-      person.animations.play('walk')
-    else
-      person.animations.stop('walk')
+
+    if (cursors.up.isDown && player.body.velocity.y == 0 && game.time.now > jumpTimer)
+      player.body.velocity.y = -500;
+      jumpTimer = game.time.now + 750;
+      player.animations.play('jump')
+window.game = game
