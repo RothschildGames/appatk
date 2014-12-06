@@ -25,7 +25,7 @@ class AppAtk.Views.WavePath extends Phaser.Graphics
     horGutter = 53
     edgeHorGutter = 55
     verGutter = 57.5
-    edgeVerGutter = 59
+    edgeVerGutter = 56
     iconWidth = 120
     iconHeight = 119
     x = (iconWidth * (pos.x + 1)) + edgeHorGutter + (horGutter * (pos.x)) + (horGutter * 0.5)
