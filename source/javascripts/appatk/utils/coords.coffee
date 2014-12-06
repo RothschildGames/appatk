@@ -10,7 +10,7 @@ class AppAtk.Utils.Coords
   @TOWER_LOCATIONS = []
   for i in [0..4]
     for j in [0..5]
-      @TOWER_LOCATIONS.push({x: 55+60 + (120+53)*i, y: 59+60 + (120+56)*j })
+      @TOWER_LOCATIONS.push({x: 55+60 + (120+53)*i, y: 59+60 + (120+56)*j, col: i, row: j })
 
   @wavePathWorldPos: (pos, specialType = null) ->
     x = (@ICON_WIDTH * (pos.x + 1)) + @EDGE_HOR_GUTTER + (@HOR_GUTTER * (pos.x)) + (@HOR_GUTTER * 0.5)

@@ -16,6 +16,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     @shop.create()
 
     @structure = new AppAtk.Models.Structure()
+    game.structure = @structure
     @waveView = new AppAtk.Views.WaveView(game, 0, 0)
     @_generateWave()
 

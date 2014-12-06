@@ -16,6 +16,9 @@ class AppAtk.Models.Structure
     )
     wavePath
 
+  hasTowerAt: (row, col) ->
+    @towersMatrix[row][col] != null
+
   addTowerAt: (tower, row, col) ->
     @towersMatrix[row][col] = tower
 
