@@ -11,6 +11,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     game.load.image('icon-01', '/images/app-atk-icon.png')
     game.load.image('icon-02', '/images/icon-02.png')
     game.load.image('battery', '/images/battery.png')
+    game.load.spritesheet('monster', '/images/monster.png', 42, 33)
 
   create: ->
     bg = game.add.sprite(0, 0, 'background')
@@ -49,6 +50,9 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     wavePathView = new AppAtk.Views.WavePath(game, 0, 0)
     wavePathView.drawWavePath(wavePath)
     game.add.existing(wavePathView)
+
+#    monster = new AppAtk.Views.Monster(game, 40, 40)
+#    game.add.existing(monster)
 
     homeButton = document.getElementById('home-button')
     homeButton.onclick = =>
