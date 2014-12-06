@@ -9,17 +9,13 @@ class AppAtk.Views.Monster extends Phaser.Sprite
   generatePathTween: (path) ->
     monsterTween = game.add.tween(@)
     lastIndex = path.length - 1
-
-    _.times(path.length - 1, (i) ->
-      trueIndex = i+1
-      nextPathCoord = path[trueIndex]
-      isLast = (trueIndex == lastIndex)
-      type = if isLast then 'last' else null
-      nextWorldCoord = AppAtk.Utils.Coords.wavePathWorldPos(nextPathCoord, type)
-      x = nextWorldCoord.x
-      y = nextWorldCoord.y
-      y += 15 if isLast
-      monsterTween = monsterTween.to({x: x, y: y}, 1000)
-    )
+    lastPoint = null
+    for point, i in path
+      isLast = (i == path.length - 1)
+      worldPoint = AppAtk.Utils.Coords.wavePathWorldPos(point, if isLast then 'last' else null)
+      if lastWorldPoint
+        distance = Phaser.Point.distance(worldPoint, lastWorldPoint)
+        monsterTween.to({x: worldPoint.x, y: worldPoint.y}, distance * 10)
+      lastWorldPoint = worldPoint
 
     monsterTween.start()

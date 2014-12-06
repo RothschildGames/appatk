@@ -3,7 +3,7 @@ class AppAtk.Utils.Coords
   @HOR_GUTTER = 53
   @VER_GUTTER = 57.5
   @EDGE_HOR_GUTTER = 55
-  @EDGE_VER_GUTTER = 56
+  @EDGE_VER_GUTTER = 70
   @ICON_WIDTH = 120
   @ICON_HEIGHT = 119
 
