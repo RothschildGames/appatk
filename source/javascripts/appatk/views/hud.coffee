@@ -1,12 +1,6 @@
 class AppAtk.Views.HUD
   constructor: (@game, @gameState) ->
-    @create()
-    @renderHealth()
-    @renderWave()
-    @renderScore()
-    @gameState.on('change:health', @renderHealth)
-    @gameState.on('change:score', @renderScore)
-    @gameState.on('change:wave', @renderWave)
+    game.load.image('battery', '/images/battery.png')
 
   create: ->
     @waveShapes = []
@@ -41,6 +35,13 @@ class AppAtk.Views.HUD
     @batteryFill = @game.add.graphics(691, 19)
     @batteryFill.beginFill(0xFFFFFF, 1)
     @batteryFill.drawRect(0,0, 40, 14)
+
+    @renderHealth()
+    @renderWave()
+    @renderScore()
+    @gameState.on('change:health', @renderHealth)
+    @gameState.on('change:score', @renderScore)
+    @gameState.on('change:wave', @renderWave)
 
   renderScore: =>
     @scoreText.text = "#{@gameState.get('score')} G"
