@@ -1,4 +1,4 @@
-class AppAtk.Structure
+class AppAtk.Models.Structure
 
   constructor: (@width = 4, @height = 6) ->
     @towersMatrix = @_generateMatrix(@width, @height)
@@ -10,7 +10,14 @@ class AppAtk.Structure
       col = Math.floor(Math.random() * (@width - 1))
       wavePath.push(new Phaser.Point(col, row))
     )
+    wavePath[1].x = wavePath[0].x # force the first part of the path to be at the same col
     wavePath
+
+  addTowerAt: (tower, row, col) ->
+    @towersMatrix[row][col] = tower
+
+  removeTowerAt: (row, col) ->
+    @towersMatrix[row][col] = null
 
   _generateMatrix: (width, height) ->
     towersMatrix = []
