@@ -1,4 +1,4 @@
-class AppAtk.Structure
+class AppAtk.Models.Structure
 
   constructor: (@width = 4, @height = 6) ->
     @towersMatrix = @_generateMatrix(@width, @height)
