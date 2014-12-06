@@ -6,6 +6,20 @@
   }
 }
 
+@mixin retina {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (   min--moz-device-pixel-ratio: 2),
+  only screen and (     -o-min-device-pixel-ratio: 2/1),
+  only screen and (        min-device-pixel-ratio: 2),
+  only screen and (                min-resolution: 192dpi),
+  only screen and (                min-resolution: 2dppx) {
+
+    @content
+
+  }
+}
+
 body {
   background: #d4d4d4 url("../images/background.png");
   text-align: center;
@@ -14,20 +28,33 @@ html, body{
   height: 100%;
 }
 
+@mixin phone-container-size($ratio: 2){
+  $width: 865px;
+  $height: 1767px;
+  width: $width / $ratio;
+  height: $height / $ratio;
+  #drawing-canvas{
+    $offset-left: 57px;
+    $offset-top: 216px;
+    $width: 752px;
+    $height: 1337px;
+    left: $offset-left / $ratio;
+    top: $offset-top / $ratio;
+    width: $width / $ratio;
+    height: $height / $ratio;
+  }
+}
 .phone-container{
   background-image: url('/images/iphone-container.png');
-  width: 288px;
-  height: 589px;
   background-size: 100%;
   position: relative;
   margin: 20px auto;
-
   #drawing-canvas{
     position: absolute;
-    left: 19px;
-    top: 72px;
-    width:250px;
-    height: 445px;
+  }
+  @include phone-container-size();
+  @include retina {
+    @include phone-container-size(3);
   }
 }
 
