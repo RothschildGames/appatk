@@ -8,6 +8,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
   preload: ->
     game.load.image('background', '/images/bg.png')
+    game.load.spritesheet('monster', '/images/monster.png', 42, 33)
     @gameState = new AppAtk.Models.GameState()
     @hud = new AppAtk.Views.HUD(game, @gameState)
     @shop = new AppAtk.Views.Shop(game)
@@ -18,19 +19,23 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     @hud.create()
     @shop.create()
 
-    structure = new AppAtk.Models.Structure()
-    wavePath = structure.generateWavePath()
+    @structure = new AppAtk.Models.Structure()
+    @waveView = new AppAtk.Views.WaveView(game, 0, 0)
+    @_generateWave()
 
-    wavePathView = new AppAtk.Views.WavePath(game, 0, 0)
-    wavePathView.drawWavePath(wavePath)
-    game.add.existing(wavePathView)
+#    monster = new AppAtk.Views.Monster(game, 40, 40)
+#    game.add.existing(monster)
 
     homeButton = document.getElementById('home-button')
-    homeButton.onclick = =>
-      wavePath = structure.generateWavePath()
-      wavePathView.drawWavePath(wavePath)
+    homeButton.onclick = => @_generateWave()
 
   update: ->
+
+  _generateWave: ->
+    wavePath = @structure.generateWavePath()
+    wave = new AppAtk.Models.Wave(path: wavePath)
+    @waveView.drawWave(wave)
+
 
 
 window.game = game
