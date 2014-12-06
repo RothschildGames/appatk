@@ -14,7 +14,7 @@ class AppAtk.Models.Structure
         nextCol = Math.floor(Math.random() * (@width - 1))
         wavePath.push(new Phaser.Point(nextCol, row))
     )
-    wavePath
+    @_sanitizedPath(wavePath)
 
   hasTowerAt: (row, col) ->
     @towersMatrix[row][col] != null
@@ -33,3 +33,17 @@ class AppAtk.Models.Structure
       towersMatrix.push(row)
     )
     towersMatrix
+
+  _sanitizedPath: (path) ->
+    newPath = []
+    index = 0
+    lastPoint = null
+    while index < path.length
+      currentPoint = path[index]
+      nextPoint = path[index + 1]
+      if !lastPoint || !nextPoint || (lastPoint.x == currentPoint.x && nextPoint.x != currentPoint.x) || (lastPoint.x != currentPoint.x)
+        newPath.push(currentPoint)
+      lastPoint = currentPoint
+      index += 1
+
+    newPath
