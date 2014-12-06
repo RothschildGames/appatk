@@ -12,6 +12,12 @@ class AppAtk.Models.Structure
     )
     wavePath
 
+  addTowerAt: (tower, row, col) ->
+    @towersMatrix[row][col] = tower
+
+  removeTowerAt: (row, col) ->
+    @towersMatrix[row][col] = null
+
   _generateMatrix: (width, height) ->
     towersMatrix = []
     _.times(height, ->

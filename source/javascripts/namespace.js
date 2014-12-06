@@ -1,1 +1,1 @@
-window.AppAtk = {Models: {}, View: {}}
+window.AppAtk = {Models: {}, Views: {}}
