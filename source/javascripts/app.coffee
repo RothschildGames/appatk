@@ -84,53 +84,19 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
         @sprite.position.distance(loc)
       game.add.tween(@sprite).to({x: location.x, y: location.y}, 80, Phaser.Easing.Linear.None, true)
 
-
-
     structure = new AppAtk.Models.Structure()
     wavePath = structure.generateWavePath()
 
-    shape = game.add.graphics(0, 0)
-    shape.lineStyle(15, 0xFFEE00, 0.5)
+    wavePathView = new AppAtk.Views.WavePath(game, 0, 0)
+    wavePathView.drawWavePath(wavePath)
+    game.add.existing(wavePathView)
 
-    firstPos = @_wavePathWorldPos(wavePath[0], 'first')
-    shape.moveTo(firstPos.x, firstPos.y)
-
-    _.times(wavePath.length - 1, (i) =>
-      wavePathPos = wavePath[i+1]
-      nextWavePos = wavePath[i+2]
-      if nextWavePos
-        newRowPos = @_wavePathWorldPos(wavePath[i+1])
-        shape.lineTo(newRowPos.x, newRowPos.y)
-        sameRowPos = @_wavePathWorldPos(new Phaser.Point(nextWavePos.x, wavePathPos.y))
-        shape.lineTo(sameRowPos.x, sameRowPos.y)
-      else
-        newRowPos = @_wavePathWorldPos(wavePath[i+1], 'last')
-        shape.lineTo(newRowPos.x, newRowPos.y)
-    )
+    homeButton = document.getElementById('home-button')
+    homeButton.onclick = =>
+      wavePath = structure.generateWavePath()
+      wavePathView.drawWavePath(wavePath)
 
   update: ->
-    # if @sprite.input.pointerOver(game.input.activePointer)
-    #   @sprite.scale.x = 1.2
-    #   @sprite.scale.y = 1.2
-    # else
-    #   @sprite.scale.x = 1
-    #   @sprite.scale.y = 1
 
-    # if .position.
-
-
-  _wavePathWorldPos: (pos, specialType = null) ->
-    horGutter = 53
-    edgeHorGutter = 55
-    verGutter = 57.5
-    edgeVerGutter = 59
-    iconWidth = 120
-    iconHeight = 119
-    x = (iconWidth * (pos.x + 1)) + edgeHorGutter + (horGutter * (pos.x)) + (horGutter * 0.5)
-    y = (iconHeight + verGutter) * (pos.y)
-    y += (verGutter * 0.5) if specialType == null
-    y += edgeVerGutter + (horGutter * 0.5) if specialType == 'last'
-
-    new Phaser.Point(x, y)
 
 window.game = game
