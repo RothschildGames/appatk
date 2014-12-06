@@ -1,4 +1,4 @@
-game = new Phaser.Game 250*3, 445*3, Phaser.AUTO, 'drawing-canvas',
+game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
   init: ->
     game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT
     @locations = []
@@ -10,9 +10,55 @@ game = new Phaser.Game 250*3, 445*3, Phaser.AUTO, 'drawing-canvas',
     game.load.image('background', '/images/bg.png')
     game.load.image('icon-01', '/images/app-atk-icon.png')
     game.load.image('icon-02', '/images/icon-02.png')
+    game.load.image('battery', '/images/battery.png')
 
   create: ->
     bg = game.add.sprite(0, 0, 'background')
+
+    for i in [0..4]
+      shape = game.add.graphics(17 + 15*i, 26)
+      shape.lineStyle(1, 0xFFFFFF, 1)
+      if i < 3
+        shape.beginFill(0xFFFFFF, 1)
+      shape.drawCircle(0, 0, 11)
+
+    text = game.add.text(93, 12, "400 G")
+    text.font = 'Helvetica Neue'
+    text.fontSize = 24
+    text.fontWeight = 200
+    text.fill = '#FFFFFF'
+
+    text = game.add.text(game.world.centerX, 12, "APPATK")
+    text.anchor.setTo(.5, 0)
+    text.font = 'Helvetica Neue'
+    text.fontSize = 25
+    text.fontWeight = 500
+    text.fill = '#FFFFFF'
+    # window.text = text
+
+    text = game.add.text(620, 12, "100%")
+    # text.anchor.setTo(.5, 0)
+    text.font = 'Helvetica Neue'
+    text.fontSize = 24
+    text.fontWeight = 200
+    text.fill = '#FFFFFF'
+    window.text = text
+
+    battery = game.add.sprite(738, 17, 'battery')
+    battery.anchor.setTo(1, 0)
+    window.battery = battery
+
+    batteryFill = game.add.graphics(691, 19)
+    # batteryFill.anchor.setTo(1, 0)
+    batteryFill.beginFill(0xFFFFFF, 1)
+    batteryFill.drawRect(0,0, 40, 14)
+    # window.battery = battery
+    # shape = game.add.graphics(17 + 15*i, 26)
+    # shape.lineStyle(1, 0xFFFFFF, 1)
+    # if i < 3
+
+
+
     @sprite = game.add.sprite(634, 1230, 'icon-01')
     @sprite.anchor.setTo(.5, .5)
     @sprite.buttonMode = true
