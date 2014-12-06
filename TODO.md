@@ -1,0 +1,2 @@
+- Broken screen as player reaches low hp.
+- Push notifications for waves.
