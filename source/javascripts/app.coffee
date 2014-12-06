@@ -15,6 +15,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
   create: ->
     bg = game.add.sprite(0, 0, 'background')
+
     @gameState = new AppAtk.Models.GameState()
     @hud = new AppAtk.Views.HUD(game, @gameState)
 
