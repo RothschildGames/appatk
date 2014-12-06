@@ -39,17 +39,16 @@ class AppAtk.Views.App extends Phaser.Sprite
       @bringToTop()
 
   install: (location) ->
-
     @game.structure.addTowerAt(@, location.row, location.col)
     @game.add.tween(@).to({x: location.x, y: location.y}, @quick, Phaser.Easing.Linear.None, true)
-    @tweenScale(1, @quick)
+    @tweenScale(1, @quick).onComplete.add =>
+      @recharge()
 
   cancel: ->
-    tween = @game.add.tween(@)
-    tween.to({y: @y + 100}, @quick, Phaser.Easing.Linear.None, true)
-    tween.onComplete.add =>
+    @game.add.tween(@).to({y: @y + 100}, @quick, Phaser.Easing.Linear.None, true)
+    @tweenScale(0).onComplete.add =>
       @destroy()
-    @tweenScale(0)
+
 
   tweenScale: (scale = 1, speed =@quick) ->
     game.add.tween(@scale).to({x: scale, y: scale}, speed, Phaser.Easing.Linear.None, true)
@@ -62,17 +61,15 @@ class AppAtk.Views.App extends Phaser.Sprite
     @input.disableDrag()
 
   recharge: ->
-    @tint = 0x6666FF
-    @shape = @game.add.graphics(0, 0)
-    @shape.lineStyle(6, 0xFFFFFF, 0.5)
-    @shape.drawCircle(0, 0, 74)
+    @tint = 0x666666
+    @cooldown = true
+    pie = new AppAtk.Views.InsallationProgress(game, 0, 0, 36);
+    game.add.existing(pie)
+    @addChild(pie)
+    tween = @game.add.tween(pie)
+    tween.onComplete.add =>
+      @cooldown = false
+      @tint = 0xFFFFFF
+      pie.destroy()
+    tween.to({progress: 1}, @model.get('cooldown'), Phaser.Easing.Linear.None, true)
 
-#    this.bmp.ctx.beginPath();
-#    this.bmp.ctx.arc(this._radius, this._radius, this._radius, 0, (Math.PI * 2) * progress, true);
-#    this.bmp.ctx.lineTo(this._radius, this._radius);
-#    this.bmp.ctx.closePath();
-
-    @shape.lineStyle(60, 0xFF0000, 0.5)
-#    @shape.beginFill(0xFF0000, 0.5)
-    @shape.drawShape(@shape.arc(@shape.x, @shape.y, 6, 0, 0.4))
-    @addChild(@shape)

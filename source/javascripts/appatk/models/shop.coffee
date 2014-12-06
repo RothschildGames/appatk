@@ -4,6 +4,7 @@ class AppAtk.Models.Shop extends Backbone.Model
     price: 1
     spriteIdx: 0 # sprite img
     position: 0
+    cooldown: 200 # ms
 
 
 class AppAtk.Models.Shops extends Backbone.Collection
