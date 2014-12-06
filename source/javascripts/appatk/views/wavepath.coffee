@@ -6,7 +6,7 @@ class AppAtk.Views.WavePath extends Phaser.Graphics
   drawWavePath: (@wavePath) ->
     @clear()
     @lineStyle(15, 0xFFEE00, 0.5)
-    
+
     firstPos = @_wavePathWorldPos(wavePath[0], 'first')
     @moveTo(firstPos.x, firstPos.y)
 

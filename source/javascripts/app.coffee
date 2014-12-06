@@ -45,6 +45,11 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     wavePathView.drawWavePath(wavePath)
     game.add.existing(wavePathView)
 
+    homeButton = document.getElementById('home-button')
+    homeButton.onclick = =>
+      wavePath = structure.generateWavePath()
+      wavePathView.drawWavePath(wavePath)
+
   update: ->
 
 
