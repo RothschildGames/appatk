@@ -29,7 +29,7 @@ class AppAtk.Views.App extends Phaser.Sprite
       location = _.min(AppAtk.Utils.Coords.TOWER_LOCATIONS, (loc) => @position.distance(loc))
       @stopEvents()
       @app.storeMode()
-      if @game.structure.hasTowerAt(location.row, location.col)
+      if @position.y >= 1120 || @game.structure.hasTowerAt(location.row, location.col)
         @cancel()
       else
         @install(location)
