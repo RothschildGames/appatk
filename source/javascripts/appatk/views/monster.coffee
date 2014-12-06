@@ -29,4 +29,5 @@ class AppAtk.Views.Monster extends Phaser.Sprite
 
       lastWorldPoint = worldPoint
 
+    monsterTween.onComplete.add(-> AppAtk.trigger('lost-life'))
     monsterTween.start()

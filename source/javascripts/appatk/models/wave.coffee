@@ -1,7 +1,7 @@
 class AppAtk.Models.Wave extends Backbone.Model
   defaults:
     path: null
-    amount: 30
-    interval: 25
+    amount: 20
+    interval: 20
 
 

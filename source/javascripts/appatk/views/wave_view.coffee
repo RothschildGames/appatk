@@ -15,9 +15,11 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
 
   startWave: (@wave) ->
     @on = true
+    @monstersCounter = 0
 #    @wavePathView.drawWavePath(@wave.get('path')) # FOR DEBUG PURPOSE
 
   createMonsterInWave: ->
+    @monstersCounter += 1
     path = @wave.get('path')
     startCoord = AppAtk.Utils.Coords.wavePathWorldPos(path[0], 'first')
     monster = new AppAtk.Views.Monster(game, startCoord.x, startCoord.y)
@@ -27,6 +29,6 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
     monster.mask = @mask
 
   update: ->
-    return unless @on
+    return if !@on || @monstersCounter >= @wave.get('amount')
     @interval += 1
     @createMonsterInWave() if (@interval % @wave.get('interval')) == 0
