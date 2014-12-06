@@ -32,7 +32,11 @@ class AppAtk.Views.WavePath extends Phaser.Graphics
     iconHeight = 119
     x = (iconWidth * (pos.x + 1)) + edgeHorGutter + (horGutter * (pos.x)) + (horGutter * 0.5)
     y = (iconHeight + verGutter) * (pos.y)
-    y += (verGutter * 0.5) if specialType == null
-    y += edgeVerGutter + (horGutter * 0.5) if specialType == 'last'
+    if specialType == 'last'
+      y += edgeVerGutter + (horGutter * 0.5)
+    else if specialType == 'first'
+      y -= 20
+    else
+      y += (verGutter * 0.5)
 
     new Phaser.Point(x, y)
