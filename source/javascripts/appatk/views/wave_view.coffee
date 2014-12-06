@@ -12,7 +12,7 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
 
   startWave: (@wave) ->
     path = @wave.get('path')
-    @wavePathView.drawWavePath(path) # FOR DEBUG PURPOSE
+#    @wavePathView.drawWavePath(path) # FOR DEBUG PURPOSE
     @createMonsterTweenInPath(path)
 
   createMonsterTweenInPath: (path) ->

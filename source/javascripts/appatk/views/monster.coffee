@@ -1,5 +1,8 @@
 class AppAtk.Views.Monster extends Phaser.Sprite
 
+  SPEED_SLOW_MULTIPLIER = 5
+  ROTATION_SPEED = 100
+
   constructor: (game, x, y) ->
     super(game, x, y, 'monster')
     @anchor.setTo(0.5, 0.5)
@@ -15,7 +18,15 @@ class AppAtk.Views.Monster extends Phaser.Sprite
       worldPoint = AppAtk.Utils.Coords.wavePathWorldPos(point, if isLast then 'last' else null)
       if lastWorldPoint
         distance = Phaser.Point.distance(worldPoint, lastWorldPoint)
-        monsterTween.to({x: worldPoint.x, y: worldPoint.y}, distance * 10)
+        if worldPoint.x == lastWorldPoint.x
+          angle = 0
+        else if worldPoint.x > lastWorldPoint.x
+          angle = -90
+        else
+          angle = 90
+        monsterTween.to({angle: angle}, ROTATION_SPEED)
+        monsterTween.to({x: worldPoint.x, y: worldPoint.y}, distance / 1 * SPEED_SLOW_MULTIPLIER)
+
       lastWorldPoint = worldPoint
 
     monsterTween.start()
