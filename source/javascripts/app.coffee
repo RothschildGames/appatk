@@ -41,7 +41,8 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     structure = new AppAtk.Models.Structure()
     wavePath = structure.generateWavePath()
 
-    wavePathView = new AppAtk.Views.WavePath(game, 0, 0, wavePath)
+    wavePathView = new AppAtk.Views.WavePath(game, 0, 0)
+    wavePathView.drawWavePath(wavePath)
     game.add.existing(wavePathView)
 
   update: ->
