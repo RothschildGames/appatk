@@ -5,6 +5,11 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
     @wavePathView = new AppAtk.Views.WavePath(game, 0, 0)
     game.add.existing(@wavePathView)
 
+    @mask = game.add.graphics(0, 0)
+    @mask.beginFill(0xFF3300)
+    @mask.drawRect(0, 18*3, 250*3, 362*3)
+    @mask.endFill()
+
   startWave: (@wave) ->
     path = @wave.get('path')
 #    @wavePathView.drawWavePath(path) # FOR DEBUG PURPOSE
@@ -27,4 +32,6 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
       y += 15 if isLast
       monsterTween = monsterTween.to({x: x, y: y}, 1000)
     )
+
+    monster.mask = @mask
     monsterTween.start()
