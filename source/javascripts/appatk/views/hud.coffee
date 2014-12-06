@@ -1,14 +1,18 @@
 class AppAtk.Views.HUD
-  constructor: (@game) ->
+  constructor: (@game, @gameState) ->
     @create()
+    @renderHealth()
+    @renderWave()
+    @renderScore()
+    @gameState.on('change:health', @renderHealth)
+    @gameState.on('change:score', @renderScore)
+    @gameState.on('change:wave', @renderWave)
 
   create: ->
+    @waveShapes = []
     for i in [0..4]
       shape = @game.add.graphics(17 + 15*i, 26)
-      shape.lineStyle(1, 0xFFFFFF, 1)
-      if i < 3
-        shape.beginFill(0xFFFFFF, 1)
-      shape.drawCircle(0, 0, 11)
+      @waveShapes.push(shape)
 
     @scoreText = @game.add.text(93, 12, "400 G")
     @scoreText.font = 'Helvetica Neue'
@@ -23,8 +27,10 @@ class AppAtk.Views.HUD
     @titleText.fontWeight = 500
     @titleText.fill = '#FFFFFF'
 
-    @healthText = @game.add.text(620, 12, "100%")
+    @healthText = @game.add.text(680, 12, "100%")
+    @healthText.anchor.setTo(1, 0)
     @healthText.font = 'Helvetica Neue'
+    window.foo = @healthText
     @healthText.fontSize = 24
     @healthText.fontWeight = 200
     @healthText.fill = '#FFFFFF'
@@ -35,3 +41,20 @@ class AppAtk.Views.HUD
     @batteryFill = @game.add.graphics(691, 19)
     @batteryFill.beginFill(0xFFFFFF, 1)
     @batteryFill.drawRect(0,0, 40, 14)
+
+  renderScore: =>
+    @scoreText.text = "#{@gameState.get('score')} G"
+
+  renderHealth: =>
+    percent = Math.min(Math.max(0,parseInt(@gameState.get('health'))),100)
+    @healthText.text = "#{percent}%"
+    @batteryFill.scale.x = percent/100
+
+  renderWave: =>
+    wave = Math.min(Math.max(0,parseInt(@gameState.get('wave'))),5)
+    for shape, idx in @waveShapes
+      shape.clear()
+      shape.lineStyle(1, 0xFFFFFF, 1)
+      if idx < wave
+        shape.beginFill(0xFFFFFF, 1)
+      shape.drawCircle(0, 0, 11)
