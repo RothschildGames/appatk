@@ -1,3 +1,7 @@
-- Broken screen as player reaches low hp.
+- Install towers
+- Buy towers
+- Tower shoot
+- Death animation
 - Push notifications for waves.
 - Badges for upgrades.
+- Broken screen when player loses
