@@ -1,10 +1,6 @@
 game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
   init: ->
     game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT
-    @locations = []
-    for i in [0..4]
-      for j in [0..5]
-        @locations.push({x: 55+60 + (120+53)*i, y: 59+60 + (120+57)*j })
 
   preload: ->
     game.load.image('background', '/images/bg.png')
