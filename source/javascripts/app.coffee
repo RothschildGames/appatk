@@ -46,8 +46,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
       game.add.tween(@sprite).to({x: location.x, y: location.y}, 80, Phaser.Easing.Linear.None, true)
 
     @structure = new AppAtk.Models.Structure()
-    @wavePathView = new AppAtk.Views.WavePath(game, 0, 0)
-    game.add.existing(@wavePathView)
+    @waveView = new AppAtk.Views.WaveView(game, 0, 0)
     @_generateWave()
 
 #    monster = new AppAtk.Views.Monster(game, 40, 40)
@@ -60,8 +59,8 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
   _generateWave: ->
     wavePath = @structure.generateWavePath()
-    @wavePathView.drawWavePath(wavePath)
     wave = new AppAtk.Models.Wave(path: wavePath)
+    @waveView.drawWave(wave)
 
 
 
