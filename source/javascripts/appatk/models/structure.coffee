@@ -10,6 +10,7 @@ class AppAtk.Models.Structure
       col = Math.floor(Math.random() * (@width - 1))
       wavePath.push(new Phaser.Point(col, row))
     )
+    wavePath[1].x = wavePath[0].x # force the first part of the path to be at the same col
     wavePath
 
   addTowerAt: (tower, row, col) ->
