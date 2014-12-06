@@ -24,6 +24,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     homeButton.onclick = => @_generateWave()
 
   update: ->
+    @waveView?.update()
 
   _generateWave: ->
     wavePath = @structure.generateWavePath()
