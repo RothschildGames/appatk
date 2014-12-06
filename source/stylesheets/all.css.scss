@@ -53,3 +53,18 @@ h1 {
     -webkit-transform: scale(1);
   }
 }
+
+.phone-container{
+  background-image: url('/images/iphone-container.png');
+  width: 288px;
+  height: 589px;
+  background-size: 100%;
+  position: relative;
+  margin: 20px;
+  #drawing-canvas{
+    position: absolute;
+    left: 19px;
+    top: 72px;
+    // 57x217
+  }
+}
