@@ -6,11 +6,14 @@ class AppAtk.Models.Structure
 
   generateWavePath: ->
     wavePath = []
+    nextCol = Math.floor(Math.random() * (@width - 1))
     _.times(@height + 1, (row) =>
-      col = Math.floor(Math.random() * (@width - 1))
+      col = nextCol
       wavePath.push(new Phaser.Point(col, row))
+      if row != @height && row != 0
+        nextCol = Math.floor(Math.random() * (@width - 1))
+        wavePath.push(new Phaser.Point(nextCol, row))
     )
-    wavePath[1].x = wavePath[0].x # force the first part of the path to be at the same col
     wavePath
 
   addTowerAt: (tower, row, col) ->
