@@ -1,7 +1,11 @@
-- Install towers
-- Buy towers
-- Tower shoot
-- Death animation
-- Push notifications for waves.
+- Install towers - YB
+- Buy towers - YB
+- Tower shoot - YB
+- Death animation - SD
+- Lose HP - SD.
+- Monsters waves and other monster stuff - SD.
+- Push notifications for waves - SD.
+
+
+- Basic UI.
 - Badges for upgrades.
-- Broken screen when player loses
