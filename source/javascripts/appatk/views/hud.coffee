@@ -40,11 +40,11 @@ class AppAtk.Views.HUD
     @renderWave()
     @renderScore()
     @gameState.on('change:health', @renderHealth)
-    @gameState.on('change:score', @renderScore)
+    @gameState.on('change:gold', @renderScore)
     @gameState.on('change:wave', @renderWave)
 
   renderScore: =>
-    @scoreText.text = "#{@gameState.get('score')} G"
+    @scoreText.text = "#{@gameState.get('gold')} G"
 
   renderHealth: =>
     percent = Math.min(Math.max(0,parseInt(@gameState.get('health'))),100)
