@@ -15,6 +15,7 @@ AppAtk.Models.waves = new Backbone.Collection([
       hp: 5
       damage: 5
       speed: 1
+      loot: 1
     )
   },
   {
@@ -26,6 +27,7 @@ AppAtk.Models.waves = new Backbone.Collection([
       hp: 5
       damage: 5
       speed: 1
+      loot: 2
     )
   },
   {
@@ -37,6 +39,7 @@ AppAtk.Models.waves = new Backbone.Collection([
       hp: 5
       damage: 5
       speed: 1
+      loot: 3
     )
   },
   {
@@ -48,6 +51,7 @@ AppAtk.Models.waves = new Backbone.Collection([
       hp: 5
       damage: 5
       speed: 1
+      loot: 4
     )
   }
 ])

@@ -1,7 +1,7 @@
 class AppAtk.Views.MonsterView extends Phaser.Sprite
 
   SPEED_SLOW_MULTIPLIER = 8
-  BASE_ROTATION_SPEED = 80
+  BASE_ROTATION_SPEED = 70
 
   constructor: (game, x, y, @monster) ->
     super(game, x, y, 'monster')
@@ -11,9 +11,10 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
     @animations.play('walk')
     @tint = @monster.get('tint')
     @scale = new Phaser.Point(@monster.get('scale'), @monster.get('scale'))
+    @events.onKilled.add(=> @_onKilled())
 
   generatePathTween: (path) ->
-    monsterTween = game.add.tween(@)
+    @monsterTween = game.add.tween(@)
     lastIndex = path.length - 1
     lastPoint = null
     for point, i in path
@@ -27,10 +28,14 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
           angle = -90
         else
           angle = 90
-        monsterTween.to({angle: angle}, BASE_ROTATION_SPEED / @monster.get('speed'))
-        monsterTween.to({x: worldPoint.x, y: worldPoint.y}, distance / @monster.get('speed') * SPEED_SLOW_MULTIPLIER)
+        @monsterTween.to({angle: angle}, BASE_ROTATION_SPEED / @monster.get('speed'))
+        @monsterTween.to({x: worldPoint.x, y: worldPoint.y}, distance / @monster.get('speed') * SPEED_SLOW_MULTIPLIER)
 
       lastWorldPoint = worldPoint
 
-    monsterTween.onComplete.add(=> AppAtk.trigger('lost-life', @monster.get('damage')))
-    monsterTween.start()
+    @monsterTween.onComplete.add(=> AppAtk.trigger('lost-life', @monster.get('damage')))
+    @monsterTween.start()
+
+  _onKilled: ->
+    @monsterTween.stop()
+    AppAtk.trigger('got-loot', @monster.get('loot'))
