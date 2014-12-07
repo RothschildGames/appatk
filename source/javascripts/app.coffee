@@ -31,14 +31,19 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
     notification = new AppAtk.Views.Notification(game)
     game.notification = notification
-#    notification.showNotification(')
-
 
     homeButton = document.getElementById('home-button')
     homeButton.onclick = => @_nextWave()
 
-    game.notification.showNotification()
-    setTimeout(( => @_generateWave()), 500)
+    game.notification.showNotification('Next wave in 2 seconds')
+    setTimeout(( => @_generateWave()), 2000)
+
+    AppAtk.on('end-wave', => @_endWave())
+
+  _endWave: ->
+    message = if @wave.killed > @wave.missed then 'Great job!' else 'Let\'s do better next time.'
+    game.notification.showNotification("#{message} Next wave in 3 seconds")
+    setTimeout(( => @_nextWave()), 3000)
 
   _nextWave: ->
     @gameState.waveUp()

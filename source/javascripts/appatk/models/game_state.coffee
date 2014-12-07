@@ -7,6 +7,7 @@ class AppAtk.Models.GameState extends Backbone.Model
   initialize: ->
     @listenTo(AppAtk, 'lost-life', @_lostLife)
     @listenTo(AppAtk, 'monster-killed', @_gotLoot)
+    @listenTo(AppAtk, 'installed-tower', @_installedTower)
 
   waveUp: ->
     @set('wave', @get('wave') + 1)
@@ -16,3 +17,6 @@ class AppAtk.Models.GameState extends Backbone.Model
 
   _gotLoot: (loot) ->
     @set('gold', @get('gold') + loot)
+
+  _installedTower: (tower) ->
+    @set('gold', @get('gold') - tower.get('price'))

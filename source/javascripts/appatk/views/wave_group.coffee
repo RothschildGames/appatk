@@ -6,10 +6,14 @@ class AppAtk.Views.WaveGroup extends Phaser.Group
     @on = false
     @interval = 0
     game.add.existing(@)
+    AppAtk.on('lost-life', => @missed += 1)
+    AppAtk.on('monster-killed', => @killed += 1)
 
   startWave: (@wave) ->
     @on = true
     @monstersCounter = 0
+    @killed = 0
+    @missed = 0
 #    @_drawWavePath(@wave.get('path')) # Uncomment for debugging.
 
   createMonsterInWave: ->
@@ -23,9 +27,15 @@ class AppAtk.Views.WaveGroup extends Phaser.Group
     monster.generatePathTween(path)
 
   update: ->
-    return if !@on || @monstersCounter >= @wave.get('amount')
-    @interval += 1
-    @createMonsterInWave() if (@interval % @wave.get('interval')) == 0
+    return unless @on
+    doneCreatingMonsters = @monstersCounter >= @wave.get('amount')
+    if doneCreatingMonsters
+      if @countLiving() == 0
+        AppAtk.trigger('end-wave', @)
+        @on = false
+    else
+      @interval += 1
+      @createMonsterInWave() if (@interval % @wave.get('interval')) == 0
 
   _drawWavePath: (wavePath) ->
     @wavePath ||= game.add.graphics(0, 0)

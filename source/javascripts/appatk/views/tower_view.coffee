@@ -36,6 +36,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       @bringToTop()
 
   install: (location) ->
+    AppAtk.trigger('installed-tower', @model)
     @game.structure.addTowerAt(@, location.row, location.col)
     @game.add.tween(@).to({x: location.x, y: location.y}, @quick, Phaser.Easing.Linear.None, true)
     @tweenScale(1, @quick).onComplete.add =>

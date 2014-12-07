@@ -36,7 +36,10 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
 
       lastWorldPoint = worldPoint
 
-    @monsterTween.onComplete.add(=> AppAtk.trigger('lost-life', @monster.get('damage')))
+    @monsterTween.onComplete.add(=>
+      AppAtk.trigger('lost-life', @monster.get('damage'))
+      @destroy()
+    )
     @monsterTween.start()
 
   _onKilled: ->
@@ -48,7 +51,10 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
 
   slowdown: ->
     @monsterTween.timeScale *= SLOWDOWN_RATIO
+    @tint = 0xFFFFFF
     setTimeout(
-      (=> @monsterTween.timeScale /= SLOWDOWN_RATIO)
-      , SLOWDOWN_COOLDOWN
+      (=>
+        @monsterTween.timeScale /= SLOWDOWN_RATIO
+        @tint = @monster.get('tint')
+      ), SLOWDOWN_COOLDOWN
     )
