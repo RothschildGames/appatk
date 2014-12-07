@@ -41,7 +41,7 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
 
   _onKilled: ->
     @monsterTween.stop()
-    AppAtk.trigger('got-loot', @monster.get('loot'))
+    AppAtk.trigger('monster-killed', @monster.get('loot'))
 
     emitter = new AppAtk.Views.MonsterDeath(game, @x, @y, @tint)
     game.add.existing(emitter)
