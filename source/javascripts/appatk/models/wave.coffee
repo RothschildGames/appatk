@@ -12,7 +12,7 @@ AppAtk.Models.waves = new Backbone.Collection([
     monster: new AppAtk.Models.Monster(
       tint: 0xffff00
       scale: 1
-      hp: 1
+      hp: 200
       damage: 1
       speed: 1
       loot: 1
@@ -24,7 +24,7 @@ AppAtk.Models.waves = new Backbone.Collection([
     monster: new AppAtk.Models.Monster(
       tint: 0xfF991F
       scale: 1.05
-      hp: 2
+      hp: 300
       damage: 2
       speed: 1.1
       loot: 2
@@ -36,7 +36,7 @@ AppAtk.Models.waves = new Backbone.Collection([
     monster: new AppAtk.Models.Monster(
       tint: 0x884400
       scale: 1.1
-      hp: 3
+      hp: 400
       damage: 4
       speed: 1
       loot: 3
@@ -48,7 +48,7 @@ AppAtk.Models.waves = new Backbone.Collection([
     monster: new AppAtk.Models.Monster(
       tint: 0xffffaa
       scale: 1.15
-      hp: 4
+      hp: 500
       damage: 6
       speed: 1.2
       loot: 4
@@ -60,7 +60,7 @@ AppAtk.Models.waves = new Backbone.Collection([
     monster: new AppAtk.Models.Monster(
       tint: 0x333333
       scale: 1.2
-      hp: 5
+      hp: 600
       damage: 8
       speed: 1.3
       loot: 5
