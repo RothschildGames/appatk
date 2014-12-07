@@ -10,11 +10,11 @@ AppAtk.Models.waves = new Backbone.Collection([
     amount: 20
     interval: 20
     monster: new AppAtk.Models.Monster(
-      tint: null
+      tint: 0xffff00
       scale: 1
       hp: 5
       damage: 5
-      speed: 5
+      speed: 0.5
     )
   },
   {

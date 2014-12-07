@@ -15,7 +15,7 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
     @monstersCounter += 1
     path = @wave.get('path')
     startCoord = AppAtk.Utils.Coords.wavePathWorldPos(path[0], 'first')
-    monster = new AppAtk.Views.MonsterView(game, startCoord.x, startCoord.y)
+    monster = new AppAtk.Views.MonsterView(game, startCoord.x, startCoord.y, @wave.get('monster'))
     game.add.existing(monster)
 
     monster.generatePathTween(path)

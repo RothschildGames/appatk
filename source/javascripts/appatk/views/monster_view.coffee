@@ -1,13 +1,15 @@
 class AppAtk.Views.MonsterView extends Phaser.Sprite
 
   SPEED_SLOW_MULTIPLIER = 5
-  ROTATION_SPEED = 100
+  BASE_ROTATION_SPEED = 80
 
-  constructor: (game, x, y) ->
+  constructor: (game, x, y, @monster) ->
     super(game, x, y, 'monster')
     @anchor.setTo(0.5, 0.5)
     @animations.add('walk', [0, 1, 2, 3, 3, 2, 1, 0, 6, 5, 4, 5, 6], 6, true)
     @animations.play('walk')
+    @tint = @monster.get('tint')
+    @scale = new Phaser.Point(@monster.get('scale'), @monster.get('scale'))
 
   generatePathTween: (path) ->
     monsterTween = game.add.tween(@)
@@ -24,10 +26,10 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
           angle = -90
         else
           angle = 90
-        monsterTween.to({angle: angle}, ROTATION_SPEED)
-        monsterTween.to({x: worldPoint.x, y: worldPoint.y}, distance / 1 * SPEED_SLOW_MULTIPLIER)
+        monsterTween.to({angle: angle}, BASE_ROTATION_SPEED / @monster.get('speed'))
+        monsterTween.to({x: worldPoint.x, y: worldPoint.y}, distance / @monster.get('speed') * SPEED_SLOW_MULTIPLIER)
 
       lastWorldPoint = worldPoint
 
-    monsterTween.onComplete.add(-> AppAtk.trigger('lost-life'))
+    monsterTween.onComplete.add(=> AppAtk.trigger('lost-life', @monster.get('damage')))
     monsterTween.start()
