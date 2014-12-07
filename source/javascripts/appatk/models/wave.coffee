@@ -8,7 +8,7 @@ class AppAtk.Models.Wave extends Backbone.Model
 AppAtk.Models.waves = new Backbone.Collection([
   {
     amount: 20
-    interval: 20
+    interval: 35
     monster: new AppAtk.Models.Monster(
       tint: 0xffff00
       scale: 1
