@@ -6,7 +6,7 @@ class AppAtk.Models.GameState extends Backbone.Model
 
   initialize: ->
     @listenTo(AppAtk, 'lost-life', @_lostLife)
-    @listenTo(AppAtk, 'got-loot', @_gotLoot)
+    @listenTo(AppAtk, 'monster-killed', @_gotLoot)
 
   waveUp: ->
     @set('wave', @get('wave') + 1)
