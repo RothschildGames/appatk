@@ -76,16 +76,8 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
 
   attackCooldown: (cb = ->) ->
     @status = 'cooldown'
-    @tint = 0x666666
-    pie = new AppAtk.Views.InsallationProgress(game, 0, 0, 36);
-    game.add.existing(pie)
-    @addChild(pie)
-    tween = @game.add.tween(pie)
-    tween.onComplete.add =>
-      @tint = 0xFFFFFF
-      pie.destroy()
+    @game.add.tween(@).to({}, @model.get('cooldown') * 10, Phaser.Easing.Linear.None, true).onComplete.add =>
       cb()
-    tween.to({progress: 1}, @model.get('cooldown') * 10, Phaser.Easing.Linear.None, true)
 
   update: ->
     switch @status
@@ -121,9 +113,8 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       @startSeeking()
 
   shoot: ->
-    # TODO: shoot animation
-    @target.damage(@model.get('damage'))
+    bullet = new AppAtk.Views.Bullet(game, @)
+    bullet.shootAt @target, =>
+      @target.damage(@model.get('damage'))
     @attackCooldown =>
       @status = 'targeting'
-
-
