@@ -5,7 +5,6 @@ class AppAtk.Sfx
 
   sounds: {}
 
-
   constructor: (@game) ->
     for key, values of @soundsSources
       soundObjects = []

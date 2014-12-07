@@ -43,10 +43,8 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
     @monsterTween.stop()
     AppAtk.trigger('got-loot', @monster.get('loot'))
 
-    emitter = game.add.emitter(@x, @y, 100)
-    emitter.makeParticles('death-particle')
-    emitter.forEach((particle) => particle.tint = @tint)
-    emitter.start(true, 2000, null, 10)
+    emitter = new AppAtk.Views.MonsterDeath(game, @x, @y, @tint)
+    game.add.existing(emitter)
 
   slowdown: ->
     @monsterTween.timeScale *= SLOWDOWN_RATIO
