@@ -1,0 +1,47 @@
+/* line 23, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+body {
+  background: #d4d4d4 url("../images/background.png");
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none; }
+
+/* line 29, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+html, body {
+  height: 100%; }
+
+/* line 49, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+.phone-container {
+  background-image: url("/images/iphone-container.png");
+  background-size: 100%;
+  position: relative;
+  margin: 20px auto;
+  width: 432.5px;
+  height: 883.5px; }
+  /* line 54, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+  .phone-container #drawing-canvas {
+    position: absolute; }
+  /* line 38, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+  .phone-container #drawing-canvas {
+    left: 28px;
+    top: 108px;
+    width: 376px;
+    height: 668.5px; }
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    /* line 49, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+    .phone-container {
+      width: 288.33333px;
+      height: 589px; }
+      /* line 38, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+      .phone-container #drawing-canvas {
+        left: 18.66667px;
+        top: 72px;
+        width: 250.66667px;
+        height: 445.66667px; } }
+
+/* line 63, /Users/yon/Development/ludum/website/source/stylesheets/all.css.scss */
+#home-button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 120px;
+  top: 525px; }
