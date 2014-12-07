@@ -19,14 +19,15 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
     @structure = new AppAtk.Models.Structure()
     game.structure = @structure
-    @waveView = new AppAtk.Views.WaveView(game, 0, 0)
+    @wave = new AppAtk.Views.WaveGroup(game, 0, 0)
+    game.wave = @wave
     @_generateWave()
 
     homeButton = document.getElementById('home-button')
     homeButton.onclick = => @_nextWave()
 
-  update: ->
-    @waveView?.update()
+#  update: ->
+#    @waveView?.update() # is called by default
 
   _nextWave: ->
     @gameState.waveUp()
@@ -36,6 +37,6 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     wavePath = @structure.generateWavePath()
     wave = @waves.at(@gameState.get('wave') - 1)
     wave.set('path', wavePath)
-    @waveView.startWave(wave)
+    @wave.startWave(wave)
 
 window.game = game

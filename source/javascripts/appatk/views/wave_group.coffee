@@ -1,10 +1,11 @@
-class AppAtk.Views.WaveView extends Phaser.Sprite
+class AppAtk.Views.WaveGroup extends Phaser.Group
 
   constructor: (game, x, y) ->
     super(game, x, y)
     @_generateMask()
     @on = false
     @interval = 0
+    game.add.existing(@)
 
   startWave: (@wave) ->
     @on = true
@@ -17,6 +18,7 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
     startCoord = AppAtk.Utils.Coords.wavePathWorldPos(path[0], 'first')
     monster = new AppAtk.Views.MonsterView(game, startCoord.x, startCoord.y, @wave.get('monster'))
     game.add.existing(monster)
+    @add(monster)
 
     monster.generatePathTween(path)
     monster.mask = @mask

@@ -1,10 +1,11 @@
 class AppAtk.Views.MonsterView extends Phaser.Sprite
 
-  SPEED_SLOW_MULTIPLIER = 5
+  SPEED_SLOW_MULTIPLIER = 8
   BASE_ROTATION_SPEED = 80
 
   constructor: (game, x, y, @monster) ->
     super(game, x, y, 'monster')
+    @health = 100
     @anchor.setTo(0.5, 0.5)
     @animations.add('walk', [0, 1, 2, 3, 3, 2, 1, 0, 6, 5, 4, 5, 6], 6, true)
     @animations.play('walk')
