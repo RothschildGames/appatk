@@ -86,7 +86,6 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       when 'targeting' then @performTargeting()
 
   startSeeking: ->
-    @target.tint = 0xFFFFFF if @target?
     @target = null
     @status = 'seeking'
 
@@ -105,7 +104,6 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
   startTargeting: (monster) ->
     @status = 'targeting'
     @target = monster
-    monster.tint = 0x00FF00
 
   performTargeting: ->
     if @targetInRange()
