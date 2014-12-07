@@ -4,12 +4,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
   quick: 80
   status: null
 
-#  @create:(game, x, y, model, group) ->
-#    tmp = new @(game, x, y, model)
-#    window.app = tmp
-#    tmp
-
-  constructor: (game, x, y, @model, @group) ->
+  constructor: (game, x, y, @model, @group, @price) ->
     super(game, x, y, 'apps', model.get('spriteIdx'))
     @anchor.setTo(.5, .5)
     game.add.existing(@)
@@ -120,3 +115,11 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
     @bounceScale()
     @attackCooldown =>
       @status = 'targeting'
+
+  onGoldChangeForStore: ->
+    if @price <= AppAtk.gameState.get('gold')
+      @alpha = 1
+      @inputEnabled = true
+    else
+      @alpha = 0.5
+      @inputEnabled = false

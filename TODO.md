@@ -1,12 +1,7 @@
-- Install towers - YB.
-- Buy towers - YB.
-- Tower shoot - YB.
-
-- Death animation - SD.
-- Push notifications for waves - SD.
 - Timer between waves - SD.
 
 POLISH AND FINAL STUFF
+- Better bullet graphics (different one for each tower?).
 - Preloader.
 - Sounds.
 - More towers + random pool of towers each game.

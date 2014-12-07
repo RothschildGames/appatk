@@ -11,8 +11,8 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     @gameState = new AppAtk.Models.GameState()
     @hud = new AppAtk.Views.HUD(game, @gameState)
     @shop = new AppAtk.Views.Shop(game)
-
     @waves = AppAtk.Models.waves
+    AppAtk.gameState = @gameState
 
   create: ->
     bg = game.add.sprite(0, 0, 'background')
