@@ -1,4 +1,4 @@
-class AppAtk.Views.Monster extends Phaser.Sprite
+class AppAtk.Views.MonsterView extends Phaser.Sprite
 
   SPEED_SLOW_MULTIPLIER = 5
   ROTATION_SPEED = 100

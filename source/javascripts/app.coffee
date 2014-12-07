@@ -32,5 +32,4 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     @waveView.startWave(wave)
 
 
-
 window.game = game

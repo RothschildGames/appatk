@@ -2,8 +2,6 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
 
   constructor: (game, x, y) ->
     super(game, x, y)
-    @wavePathView = new AppAtk.Views.WavePath(game, 0, 0)
-    game.add.existing(@wavePathView)
 
     @mask = game.add.graphics(0, 0)
     @mask.beginFill(0xFF3300)
@@ -16,13 +14,13 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
   startWave: (@wave) ->
     @on = true
     @monstersCounter = 0
-#    @wavePathView.drawWavePath(@wave.get('path')) # FOR DEBUG PURPOSE
+    @_drawWavePath(@wave.get('path')) # Uncomment for debugging.
 
   createMonsterInWave: ->
     @monstersCounter += 1
     path = @wave.get('path')
     startCoord = AppAtk.Utils.Coords.wavePathWorldPos(path[0], 'first')
-    monster = new AppAtk.Views.Monster(game, startCoord.x, startCoord.y)
+    monster = new AppAtk.Views.MonsterView(game, startCoord.x, startCoord.y)
     game.add.existing(monster)
 
     monster.generatePathTween(path)
@@ -32,3 +30,17 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
     return if !@on || @monstersCounter >= @wave.get('amount')
     @interval += 1
     @createMonsterInWave() if (@interval % @wave.get('interval')) == 0
+
+  _drawWavePath: (wavePath) ->
+    @wavePath ||= game.add.graphics(0, 0)
+    @wavePath.clear()
+    @wavePath.lineStyle(15, 0xFFEE00, 0.5)
+
+    firstPos = AppAtk.Utils.Coords.wavePathWorldPos(wavePath[0], 'first')
+    @wavePath.moveTo(firstPos.x, firstPos.y)
+
+    _.times(wavePath.length - 1, (i) =>
+      wavePathPos = wavePath[i+1]
+      worldPos = AppAtk.Utils.Coords.wavePathWorldPos(new Phaser.Point(wavePathPos.x, wavePathPos.y))
+      @wavePath.lineTo(worldPos.x, worldPos.y)
+    )

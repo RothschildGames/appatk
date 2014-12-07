@@ -1,4 +1,4 @@
-class AppAtk.Models.Structure
+class AppAtk.Models.Structure extends Backbone.Model
 
   constructor: (@width = 4, @height = 6) ->
     @towersMatrix = @_generateMatrix(@width, @height)

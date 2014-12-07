@@ -37,8 +37,3 @@ AppAtk.Models.shops = new AppAtk.Models.Shops([
     price: 30
   },
   ])
-# shops.push(
-#   name: 'Shooty'
-#   spriteIdx: 0
-#   price: 5
-# )
