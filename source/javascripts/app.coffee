@@ -4,6 +4,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
   preload: ->
     game.load.image('background', '/images/bg.png')
+    game.load.image('death-particle', '/images/death-particle.png')
     game.load.spritesheet('monster', '/images/monster.png', 42, 33)
     @sfx = new AppAtk.Sfx(game)
 

@@ -1,6 +1,6 @@
 class AppAtk.Views.MonsterView extends Phaser.Sprite
 
-  SPEED_SLOW_MULTIPLIER = 12
+  SPEED_SLOW_MULTIPLIER = 8
   BASE_ROTATION_SPEED = 70
 
   SLOWDOWN_RATIO = 0.8
@@ -14,7 +14,7 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
     @animations.play('walk')
     @tint = @monster.get('tint')
     @scale = new Phaser.Point(@monster.get('scale'), @monster.get('scale'))
-    @events.onKilled.add(@_onKilled)
+    @events.onKilled.add(=> @_onKilled())
 
   generatePathTween: (@path) ->
     @monsterTween = game.add.tween(@)
@@ -39,10 +39,14 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
     @monsterTween.onComplete.add(=> AppAtk.trigger('lost-life', @monster.get('damage')))
     @monsterTween.start()
 
-  _onKilled: =>
+  _onKilled: ->
     @monsterTween.stop()
     AppAtk.trigger('got-loot', @monster.get('loot'))
-    AppAtk.trigger('monster-killed', @)
+
+    emitter = game.add.emitter(@x, @y, 100)
+    emitter.makeParticles('death-particle')
+    emitter.forEach((particle) => particle.tint = @tint)
+    emitter.start(true, 2000, null, 10)
 
   slowdown: ->
     @monsterTween.timeScale *= SLOWDOWN_RATIO
