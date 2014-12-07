@@ -14,6 +14,9 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
     @animations.play('walk')
     @tint = @monster.get('tint')
     @scale = new Phaser.Point(@monster.get('scale'), @monster.get('scale'))
+    @events.onKilled.add =>
+      AppAtk.trigger('monster-killed', @)
+      @currentTween.stop()
 
   generatePathTween: (@path) ->
     monsterTween = game.add.tween(@)

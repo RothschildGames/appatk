@@ -21,7 +21,7 @@ AppAtk.Models.shops = new AppAtk.Models.Shops([
     position: 0
     price: 5
     cooldown: 100
-    damage: 40
+    damage: 100
   },
   {
     name: 'Splashy'
