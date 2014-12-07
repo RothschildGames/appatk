@@ -11,14 +11,10 @@ class AppAtk.Views.Shop
   create: ->
     @towersLayer = @game.add.group()
     @badgeLayer = @game.add.group()
-    @towersInShop = []
     @shops.forEach (shop) =>
       location = @locations[shop.get('position')]
-      shopSprite = new AppAtk.Views.TowerView(game, location.x, location.y, shop, @towersLayer, shop.get('price'))
-      AppAtk.listenTo(AppAtk.gameState, 'change:gold', -> shopSprite.onGoldChangeForStore())
-      shopSprite.onGoldChangeForStore()
+      shopSprite = new AppAtk.Views.TowerView(game, location.x, location.y, shop, @towersLayer)
       shopSprite.storeMode()
-      @towersInShop.push({sprite: shopSprite, price: shop.get('price')})
 
       shopText = @game.add.text(location.x, location.y + 70, shop.get('name'))
       shopText.anchor.setTo(.5, 0)

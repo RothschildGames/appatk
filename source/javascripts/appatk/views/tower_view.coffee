@@ -4,7 +4,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
   quick: 80
   status: null
 
-  constructor: (game, x, y, @model, @group, @price) ->
+  constructor: (game, x, y, @model, @group) ->
     super(game, x, y, 'apps', model.get('spriteIdx'))
     @anchor.setTo(.5, .5)
     game.add.existing(@)
@@ -12,6 +12,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
 
   storeMode: ->
     @status = 'store'
+    AppAtk.gameState.on('change:gold', => @onGoldChangeForStore())
     @buttonMode = true
     @inputEnabled = true
     @input.enableDrag(true)
@@ -34,11 +35,12 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
     @events.onInputDown.add =>
       @app = new AppAtk.Views.TowerView(@game, @x, @y, @model, @group)
       @bringToTop()
+    @onGoldChangeForStore()
 
   install: (location) ->
     AppAtk.trigger('installed-tower', @model)
     @game.structure.addTowerAt(@, location.row, location.col)
-    @game.add.tween(@).to({x: location.x, y: location.y}, @quick, Phaser.Easing.Linear.None, true)
+    @game.add.tween(@).to({x: location.x, y: location.y, alpha: 1}, @quick, Phaser.Easing.Linear.None, true)
     @tweenScale(1, @quick).onComplete.add =>
       @cooldown =>
         @startSeeking()
@@ -118,7 +120,8 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       @status = 'targeting'
 
   onGoldChangeForStore: ->
-    if @price <= AppAtk.gameState.get('gold')
+    return unless @status == 'store'
+    if @model.get('price') <= AppAtk.gameState.get('gold')
       @alpha = 1
       @inputEnabled = true
     else
