@@ -11,7 +11,7 @@ class AppAtk.Views.Shop
   create: ->
     @shops.forEach (shop) =>
       location = @locations[shop.get('position')]
-      shopSprite = AppAtk.Views.Tower.create(game, location.x, location.y, shop)
+      shopSprite = AppAtk.Views.TowerView.create(game, location.x, location.y, shop)
       shopSprite.storeMode()
       shopText = @game.add.text(location.x, location.y + 70, shop.get('name'))
       shopText.anchor.setTo(.5, 0)

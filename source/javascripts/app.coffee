@@ -9,6 +9,8 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     @hud = new AppAtk.Views.HUD(game, @gameState)
     @shop = new AppAtk.Views.Shop(game)
 
+    @waves = AppAtk.Models.waves
+
   create: ->
     bg = game.add.sprite(0, 0, 'background')
 
@@ -28,8 +30,8 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
   _generateWave: ->
     wavePath = @structure.generateWavePath()
-    wave = new AppAtk.Models.Wave(path: wavePath)
+    wave = @waves.at(@gameState.get('wave') - 1)
+    wave.set('path', wavePath)
     @waveView.startWave(wave)
-
 
 window.game = game

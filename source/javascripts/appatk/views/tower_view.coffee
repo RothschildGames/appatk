@@ -1,4 +1,4 @@
-class AppAtk.Views.Tower extends Phaser.Sprite
+class AppAtk.Views.TowerView extends Phaser.Sprite
   hoverScale: 1.1
   slow: 200
   quick: 80
@@ -34,7 +34,7 @@ class AppAtk.Views.Tower extends Phaser.Sprite
         @install(location)
 
     @events.onInputDown.add =>
-      @app = AppAtk.Views.Tower.create(@game, @x, @y, @model)
+      @app = AppAtk.Views.TowerView.create(@game, @x, @y, @model)
       @bringToTop()
 
   install: (location) ->

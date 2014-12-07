@@ -2,19 +2,14 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
 
   constructor: (game, x, y) ->
     super(game, x, y)
-
-    @mask = game.add.graphics(0, 0)
-    @mask.beginFill(0xFF3300)
-    @mask.drawRect(0, 18*3, 250*3, 362*3)
-    @mask.endFill()
-
+    @_generateMask()
     @on = false
     @interval = 0
 
   startWave: (@wave) ->
     @on = true
     @monstersCounter = 0
-    @_drawWavePath(@wave.get('path')) # Uncomment for debugging.
+#    @_drawWavePath(@wave.get('path')) # Uncomment for debugging.
 
   createMonsterInWave: ->
     @monstersCounter += 1
@@ -44,3 +39,10 @@ class AppAtk.Views.WaveView extends Phaser.Sprite
       worldPos = AppAtk.Utils.Coords.wavePathWorldPos(new Phaser.Point(wavePathPos.x, wavePathPos.y))
       @wavePath.lineTo(worldPos.x, worldPos.y)
     )
+
+  _generateMask: ->
+    @mask = game.add.graphics(0, 0)
+    @mask.beginFill(0xFF3300)
+    @mask.drawRect(0, 18*3, 250*3, 362*3)
+    @mask.endFill()
+
