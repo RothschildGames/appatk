@@ -2,7 +2,7 @@ class AppAtk.Models.GameState extends Backbone.Model
   defaults:
     wave: 1
     health: 100
-    gold: 0
+    gold: 10
 
   initialize: ->
     @listenTo(AppAtk, 'lost-life', @_lostLife)
