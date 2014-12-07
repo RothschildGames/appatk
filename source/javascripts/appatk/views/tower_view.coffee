@@ -4,15 +4,16 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
   quick: 80
   status: null
 
-  @create:(game, x, y, model) ->
-    tmp = new @(game, x, y, model)
-    window.app = tmp
-    game.add.existing(tmp)
-    tmp
+#  @create:(game, x, y, model, group) ->
+#    tmp = new @(game, x, y, model)
+#    window.app = tmp
+#    tmp
 
-  constructor: (game, x, y, @model) ->
+  constructor: (game, x, y, @model, @group) ->
     super(game, x, y, 'apps', model.get('spriteIdx'))
     @anchor.setTo(.5, .5)
+    game.add.existing(@)
+    @group.add(@)
 
   storeMode: ->
     @status = 'store'
@@ -36,7 +37,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
         @install(location)
 
     @events.onInputDown.add =>
-      @app = AppAtk.Views.TowerView.create(@game, @x, @y, @model)
+      @app = new AppAtk.Views.TowerView(@game, @x, @y, @model, @group)
       @bringToTop()
 
   install: (location) ->
