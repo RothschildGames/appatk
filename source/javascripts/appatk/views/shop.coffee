@@ -9,10 +9,14 @@ class AppAtk.Views.Shop
       )
 
   create: ->
+    @towersLayer = @game.add.group()
+    @badgeLayer = @game.add.group()
+
     @shops.forEach (shop) =>
       location = @locations[shop.get('position')]
-      shopSprite = AppAtk.Views.TowerView.create(game, location.x, location.y, shop)
+      shopSprite = new AppAtk.Views.TowerView(game, location.x, location.y, shop, @towersLayer)
       shopSprite.storeMode()
+
       shopText = @game.add.text(location.x, location.y + 70, shop.get('name'))
       shopText.anchor.setTo(.5, 0)
       shopText.font = 'Helvetica Neue'
@@ -21,4 +25,4 @@ class AppAtk.Views.Shop
       shopText.fill = '#FFFFFF'
 
       shopBadge = new AppAtk.Views.Badge(game, location.x + 50, location.y - 50, shop.get('price'))
-      shopBadge.z = 1000000
+      @badgeLayer.add(shopBadge)
