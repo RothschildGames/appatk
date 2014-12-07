@@ -97,7 +97,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       @startTargeting(closestMonster)
 
   targetInRange: (target = @target) ->
-    return false unless target?
+    return false unless target? and target.alive
     distanceToTarget = target.position.distance(@position)
     distanceToTarget < @model.get('radius')
 
@@ -114,6 +114,6 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
 
   shoot: ->
     bullet = new AppAtk.Views.Bullet(game, @)
-    bullet.shootAt @target
+    bullet.shootAt(@target)
     @attackCooldown =>
       @status = 'targeting'
