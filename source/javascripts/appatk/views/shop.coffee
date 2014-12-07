@@ -21,4 +21,4 @@ class AppAtk.Views.Shop
       shopText.fill = '#FFFFFF'
 
       shopBadge = new AppAtk.Views.Badge(game, location.x + 50, location.y - 50, shop.get('price'))
-      shopBadge.z = 100000
+      shopBadge.z = 1000000
