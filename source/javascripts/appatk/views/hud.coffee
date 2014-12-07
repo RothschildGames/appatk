@@ -50,6 +50,11 @@ class AppAtk.Views.HUD
     percent = Math.min(Math.max(0,parseInt(@gameState.get('health'))),100)
     @healthText.text = "#{percent}%"
     @batteryFill.scale.x = percent/100
+    if percent <= 20
+      @batteryFill.tint = 0xff3b30
+    else
+      @batteryFill.tint = 0xffffff
+    @batteryFill.dirty = true
 
   renderWave: =>
     wave = Math.min(Math.max(0,parseInt(@gameState.get('wave'))),5)
