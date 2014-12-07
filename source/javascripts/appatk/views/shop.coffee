@@ -19,3 +19,6 @@ class AppAtk.Views.Shop
       shopText.fontSize = 24
       shopText.fontWeight = 200
       shopText.fill = '#FFFFFF'
+
+      shopBadge = new AppAtk.Views.Badge(game, location.x + 50, location.y - 50, shop.get('price'))
+      shopBadge.z = 1000000
