@@ -1,4 +1,4 @@
-- Install towers - YB/
+- Install towers - YB.
 - Buy towers - YB.
 - Tower shoot - YB.
 
@@ -9,10 +9,10 @@
 - Remove Structure.js, we probably don't need it - SD.
 
 POLISH AND FINAL STUFF
+- Preloader.
 - Sounds.
 - More towers + random pool of towers each game.
 - Pixel perfect placement of towers.
 - Basic UI.
-- Badges for upgrades.
 - Readme for repo (change repo name as well?).
 - Upload to LD and host in github-page / heroku?
