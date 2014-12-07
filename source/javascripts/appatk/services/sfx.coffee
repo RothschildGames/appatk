@@ -17,12 +17,13 @@ class AppAtk.Sfx
         soundObjects.push soundKey
       @sounds[key] = soundObjects
 
-    game.load.audio('music', "/sfx/#{@music}")
+    game.load.audio('bgmusic', "/sfx/#{@music}")
+
+  start: ->
     AppAtk.on('monster-killed', (monster) =>
       @play('hit')
     )
-
-    @game.add.audio('music', 0.25, true).play()
+    @game.add.audio('bgmusic', 0.25, true).play()
 
   play: (key) ->
     soundKey = _.sample(@sounds[key])
