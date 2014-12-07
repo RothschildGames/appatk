@@ -55,6 +55,9 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
   tweenScale: (scale = 1, speed =@quick) ->
     game.add.tween(@scale).to({x: scale, y: scale}, speed, Phaser.Easing.Linear.None, true)
 
+  bounceScale: (scale = 0.9, speed = @quick) ->
+    game.add.tween(@scale).to({x: scale, y: scale}, speed).to({x: 1, y: 1}, speed).start()
+
   stopEvents: ->
     @events.onInputOver.removeAll()
     @events.onInputOut.removeAll()
@@ -114,5 +117,6 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
   shoot: ->
     bullet = new AppAtk.Views.Bullet(game, @)
     bullet.shootAt(@target)
+    @bounceScale()
     @attackCooldown =>
       @status = 'targeting'
