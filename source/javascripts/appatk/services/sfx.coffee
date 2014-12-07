@@ -22,7 +22,7 @@ class AppAtk.Sfx
       @play('hit')
     )
 
-    @game.add.audio('music', 0.2).play()
+    @game.add.audio('music', 0.25, true).play()
 
   play: (key) ->
     soundKey = _.sample(@sounds[key])
