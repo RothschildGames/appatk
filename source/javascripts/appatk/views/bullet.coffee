@@ -11,7 +11,12 @@ class AppAtk.Views.Bullet extends Phaser.Graphics
   shootAt: (@target, cb = ->) ->
     game.add.tween(@).to({x: @target.x, y:@target.y}, @speed, Phaser.Easing.Linear.None, true).onComplete.add =>
       @destroy()
-      cb()
+      @hit()
+
+  hit: ->
+    @target.damage(@tower.model.get('damage'))
+    switch @tower.model.get('spriteIdx')
+      when 2 then @target.slowdown()
 
   color: ->
     switch @tower.model.get('spriteIdx')

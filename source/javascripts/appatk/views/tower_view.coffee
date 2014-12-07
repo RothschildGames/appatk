@@ -114,7 +114,6 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
 
   shoot: ->
     bullet = new AppAtk.Views.Bullet(game, @)
-    bullet.shootAt @target, =>
-      @target.damage(@model.get('damage'))
+    bullet.shootAt @target
     @attackCooldown =>
       @status = 'targeting'
