@@ -7,5 +7,8 @@ class AppAtk.Models.GameState extends Backbone.Model
   initialize: ->
     @listenTo(AppAtk, 'lost-life', @_lostLife)
 
+  waveUp: ->
+    @set('wave', @get('wave') + 1)
+
   _lostLife: (damage) ->
     @set('health', @get('health') - damage)

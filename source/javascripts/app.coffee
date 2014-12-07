@@ -23,10 +23,14 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     @_generateWave()
 
     homeButton = document.getElementById('home-button')
-    homeButton.onclick = => @_generateWave()
+    homeButton.onclick = => @_nextWave()
 
   update: ->
     @waveView?.update()
+
+  _nextWave: ->
+    @gameState.waveUp()
+    @_generateWave()
 
   _generateWave: ->
     wavePath = @structure.generateWavePath()

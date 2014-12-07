@@ -7,14 +7,14 @@ class AppAtk.Models.Wave extends Backbone.Model
 
 AppAtk.Models.waves = new Backbone.Collection([
   {
-    amount: 20
+    amount: 2000
     interval: 35
     monster: new AppAtk.Models.Monster(
-      tint: 0xffff00
+      tint: 0xfffff0
       scale: 1
       hp: 5
       damage: 5
-      speed: 0.5
+      speed: 1
     )
   },
   {
