@@ -56,7 +56,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
     game.add.tween(@scale).to({x: scale, y: scale}, speed, Phaser.Easing.Linear.None, true)
 
   bounceScale: (scale = 0.9, speed = @quick) ->
-    game.add.tween(@scale).to({x: scale, y: scale}, speed).to({x: 1, y: 1}, speed).start()
+    game.add.tween(@scale).to({x: scale, y: scale}, speed, Phaser.Easing.Sinusoidal.InOut).to({x: 1, y: 1}, speed, Phaser.Easing.Sinusoidal.InOut).start()
 
   stopEvents: ->
     @events.onInputOver.removeAll()

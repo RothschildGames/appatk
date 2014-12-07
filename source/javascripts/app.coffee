@@ -17,6 +17,7 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
   create: ->
     bg = game.add.sprite(0, 0, 'background')
 
+
     @sfx.start()
 
     @hud.create()
@@ -26,10 +27,18 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
     game.structure = @structure
     @wave = new AppAtk.Views.WaveGroup(game, 0, 0)
     game.wave = @wave
-    @_generateWave()
+
+
+    notification = new AppAtk.Views.Notification(game)
+    game.notification = notification
+#    notification.showNotification(')
+
 
     homeButton = document.getElementById('home-button')
     homeButton.onclick = => @_nextWave()
+
+    game.notification.showNotification()
+    setTimeout(( => @_generateWave()), 500)
 
   _nextWave: ->
     @gameState.waveUp()
