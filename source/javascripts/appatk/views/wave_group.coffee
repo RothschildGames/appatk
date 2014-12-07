@@ -21,7 +21,6 @@ class AppAtk.Views.WaveGroup extends Phaser.Group
     @add(monster)
 
     monster.generatePathTween(path)
-    monster.mask = @mask
 
   update: ->
     return if !@on || @monstersCounter >= @wave.get('amount')
