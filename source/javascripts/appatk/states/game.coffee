@@ -8,6 +8,8 @@ class AppAtk.Game
     AppAtk.gameState = @gameState
 
   create: ->
+    ga('send', 'event', 'game', 'start');
+
     bg = game.add.sprite(0, 0, 'background')
 
     AppAtk.sfx.start()
@@ -38,11 +40,13 @@ class AppAtk.Game
     )
     AppAtk.gameState.on('change:gameOver', =>
       AppAtk.trigger('game-over')
+      ga('send', 'event', 'game', 'lost');
       game.state.start('gameOver')
     )
 
   _endWave: ->
     if @gameState.get('wave') == 5
+      ga('send', 'event', 'game', 'won');
       game.state.start('victory')
     else
       message = if @wave.killed > @wave.missed then 'Great job!' else 'Let\'s do better next time.'
