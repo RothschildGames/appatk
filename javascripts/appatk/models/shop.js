@@ -44,29 +44,32 @@
       position: 0,
       price: 5,
       cooldown: 100,
-      damage: 100
-    }, {
-      name: 'Splashy',
-      spriteIdx: 1,
-      position: 1,
-      cooldown: 400,
       damage: 100,
-      radius: 200,
-      price: 10
+      radius: 170
     }, {
       name: 'Slowey',
       spriteIdx: 2,
       position: 2,
-      damage: 20,
-      price: 20
+      price: 20,
+      cooldown: 100,
+      damage: 50,
+      radius: 120
+    }, {
+      name: 'Splashy',
+      spriteIdx: 1,
+      position: 1,
+      price: 14,
+      cooldown: 700,
+      damage: 200,
+      radius: 180
     }, {
       name: 'Snipey',
       spriteIdx: 3,
       position: 3,
+      price: 35,
+      cooldown: 750,
       damage: 1000,
-      cooldown: 1000,
-      radius: 400,
-      price: 30
+      radius: 400
     }
   ]);
 

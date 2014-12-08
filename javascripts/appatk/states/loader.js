@@ -64,6 +64,7 @@
       this.load.spritesheet('monster4', 'images/monster4.png', 42, 33);
       this.load.image('battery', 'images/battery.png');
       this.load.image('dead-battery', 'images/dead-battery.png');
+      this.load.image('full-battery', 'images/full-battery.png');
       this.load.spritesheet('apps', 'images/apps.png', 120, 119);
       return AppAtk.sfx = new AppAtk.Sfx(this);
     };

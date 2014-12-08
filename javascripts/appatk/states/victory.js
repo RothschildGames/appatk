@@ -1,22 +1,22 @@
 (function() {
-  AppAtk.GameOver = (function() {
-    function GameOver() {}
+  AppAtk.Victory = (function() {
+    function Victory() {}
 
-    GameOver.prototype.fadeSpeed = 300;
+    Victory.prototype.fadeSpeed = 300;
 
-    GameOver.prototype.preload = function() {
+    Victory.prototype.preload = function() {
       var bg, deadBattery, slideText, text;
       bg = this.add.sprite(0, 0, 'background');
       this.add.tween(bg).to({
         alpha: 0
       }, this.fadeSpeed).start();
-      deadBattery = this.add.sprite(this.world.centerX, this.world.centerY, 'dead-battery');
+      deadBattery = this.add.sprite(this.world.centerX, this.world.centerY, 'full-battery');
       deadBattery.alpha = 0;
       deadBattery.anchor.setTo(.5);
       this.add.tween(deadBattery).to({
         alpha: 1
       }, this.fadeSpeed).start();
-      text = this.add.text(this.world.centerX, this.world.centerY - 100, 'Game Over');
+      text = this.add.text(this.world.centerX, this.world.centerY - 100, 'Well Done!');
       text.anchor.setTo(0.5, 1);
       text.align = 'center';
       text.font = 'Helvetica Neue';
@@ -47,7 +47,7 @@
       })(this)), 1200);
     };
 
-    return GameOver;
+    return Victory;
 
   })();
 

@@ -92312,29 +92312,32 @@ _.extend(AppAtk, Backbone.Events);
       position: 0,
       price: 5,
       cooldown: 100,
-      damage: 100
-    }, {
-      name: 'Splashy',
-      spriteIdx: 1,
-      position: 1,
-      cooldown: 400,
       damage: 100,
-      radius: 200,
-      price: 10
+      radius: 170
     }, {
       name: 'Slowey',
       spriteIdx: 2,
       position: 2,
-      damage: 20,
-      price: 20
+      price: 20,
+      cooldown: 100,
+      damage: 50,
+      radius: 120
+    }, {
+      name: 'Splashy',
+      spriteIdx: 1,
+      position: 1,
+      price: 14,
+      cooldown: 700,
+      damage: 200,
+      radius: 180
     }, {
       name: 'Snipey',
       spriteIdx: 3,
       position: 3,
+      price: 35,
+      cooldown: 750,
       damage: 1000,
-      cooldown: 1000,
-      radius: 400,
-      price: 30
+      radius: 400
     }
   ]);
 
@@ -92449,56 +92452,56 @@ _.extend(AppAtk, Backbone.Events);
         tint: 0xffffff,
         scale: 1,
         hp: 200,
-        damage: 1,
+        damage: 2,
         speed: 1,
         loot: 1,
         image: 'monster0'
       })
     }, {
-      amount: 35,
+      amount: 32,
       interval: 60,
       monster: new AppAtk.Models.Monster({
         tint: 0xffde3f,
         scale: 1.05,
         hp: 300,
         damage: 2,
-        speed: 1.1,
+        speed: 1.2,
         loot: 2,
         image: 'monster1'
       })
     }, {
-      amount: 40,
-      interval: 55,
+      amount: 34,
+      interval: 58,
       monster: new AppAtk.Models.Monster({
         tint: 0x7a3030,
         scale: 1.1,
         hp: 400,
         damage: 4,
-        speed: 1,
+        speed: 1.25,
         loot: 3,
         image: 'monster2'
       })
     }, {
-      amount: 55,
-      interval: 50,
+      amount: 36,
+      interval: 56,
       monster: new AppAtk.Models.Monster({
         tint: 0x432929,
         scale: 1.15,
         hp: 500,
         damage: 6,
-        speed: 1.2,
+        speed: 1.3,
         loot: 4,
         image: 'monster3'
       })
     }, {
-      amount: 60,
-      interval: 50,
+      amount: 38,
+      interval: 54,
       monster: new AppAtk.Models.Monster({
         tint: 0x8d4000,
         scale: 1.2,
         hp: 600,
         damage: 8,
-        speed: 1.3,
+        speed: 1.35,
         loot: 5,
         image: 'monster4'
       })
@@ -92511,9 +92514,14 @@ _.extend(AppAtk, Backbone.Events);
     Sfx.prototype.music = ['sfx/RinbackTone.ogg', 'sfx/RinbackTone.mp3', 'sfx/RinbackTone.m4a'];
 
     Sfx.prototype.soundsSources = {
-      hit: ['Jump8', 'Jump15', 'Jump17'],
-      killMonster: ['Pickup_Coin31', 'Pickup_Coin34', 'Pickup_Coin39', 'Pickup_Coin40', 'Pickup_Coin43'],
-      loseHealth: ['Hit_Hurt15', 'Hit_Hurt16', 'Hit_Hurt17', 'Hit_Hurt20', 'Hit_Hurt28']
+      killMonster: ['coin-01', 'coin-02', 'coin-03', 'coin-04'],
+      damageMonster: ['monster-hit-1', 'monster-hit-2', 'monster-hit-3'],
+      loseHealth: ['lose-1', 'lose-2', 'lose-3'],
+      install: ['install-01'],
+      Splashy: ['splashy'],
+      Shooty: ['shooty'],
+      Slowey: ['slowy'],
+      Snipey: ['snipey']
     };
 
     Sfx.prototype.sounds = {};
@@ -92521,6 +92529,7 @@ _.extend(AppAtk, Backbone.Events);
     function Sfx(game) {
       var file, idx, key, soundKey, soundObjects, values, _i, _len, _ref;
       this.game = game;
+      this.playingMusic = false;
       _ref = this.soundsSources;
       for (key in _ref) {
         values = _ref[key];
@@ -92528,15 +92537,17 @@ _.extend(AppAtk, Backbone.Events);
         for (idx = _i = 0, _len = values.length; _i < _len; idx = ++_i) {
           file = values[idx];
           soundKey = "" + key + idx;
-          game.load.audio(soundKey, "sfx/" + file + ".wav");
+          game.load.audio(soundKey, "/sfx/" + file + ".wav");
           soundObjects.push(soundKey);
         }
         this.sounds[key] = soundObjects;
       }
       game.load.audio('bgmusic', this.music);
-    }
-
-    Sfx.prototype.start = function() {
+      AppAtk.on('monster-hit', (function(_this) {
+        return function(monster) {
+          return _this.play('damageMonster');
+        };
+      })(this));
       AppAtk.on('monster-killed', (function(_this) {
         return function(monster) {
           return _this.play('killMonster');
@@ -92547,7 +92558,23 @@ _.extend(AppAtk, Backbone.Events);
           return _this.play('loseHealth');
         };
       })(this));
-      return this.game.add.audio('bgmusic', 0.25, true).play();
+      AppAtk.on('installed-tower', (function(_this) {
+        return function() {
+          return _this.play('install');
+        };
+      })(this));
+      AppAtk.on('tower-fired', (function(_this) {
+        return function(tower) {
+          return _this.play(tower.get('name'));
+        };
+      })(this));
+    }
+
+    Sfx.prototype.start = function() {
+      if (!this.playingMusic) {
+        this.game.add.audio('bgmusic', 0.25, true).play();
+      }
+      return this.playingMusic = true;
     };
 
     Sfx.prototype.play = function(key) {
@@ -92643,13 +92670,17 @@ _.extend(AppAtk, Backbone.Events);
 
     Game.prototype._endWave = function() {
       var message;
-      message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';
-      game.notification.showNotification("" + message + " Next wave in 3 seconds");
-      return setTimeout(((function(_this) {
-        return function() {
-          return _this._nextWave();
-        };
-      })(this)), 3000);
+      if (this.gameState.get('wave') === 5) {
+        return game.state.start('victory');
+      } else {
+        message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';
+        game.notification.showNotification("" + message + " Next wave in 3 seconds");
+        return setTimeout(((function(_this) {
+          return function() {
+            return _this._nextWave();
+          };
+        })(this)), 3000);
+      }
     };
 
     Game.prototype._nextWave = function() {
@@ -92702,11 +92733,11 @@ _.extend(AppAtk, Backbone.Events);
       slideText.fontSize = 48;
       slideText.fontWeight = 200;
       slideText.fill = '#FFFFFF';
-      slideText.inputEnabled = true;
-      slideText.events.onInputDown.add((function(_this) {
+      bg.inputEnabled = true;
+      bg.events.onInputDown.add((function(_this) {
         return function() {
           if (slideText.alpha > 0) {
-            return game.state.start('game');
+            return window.location.reload();
           }
         };
       })(this));
@@ -92821,11 +92852,66 @@ _.extend(AppAtk, Backbone.Events);
       this.load.spritesheet('monster4', 'images/monster4.png', 42, 33);
       this.load.image('battery', 'images/battery.png');
       this.load.image('dead-battery', 'images/dead-battery.png');
+      this.load.image('full-battery', 'images/full-battery.png');
       this.load.spritesheet('apps', 'images/apps.png', 120, 119);
       return AppAtk.sfx = new AppAtk.Sfx(this);
     };
 
     return Loader;
+
+  })();
+
+}).call(this);
+(function() {
+  AppAtk.Victory = (function() {
+    function Victory() {}
+
+    Victory.prototype.fadeSpeed = 300;
+
+    Victory.prototype.preload = function() {
+      var bg, deadBattery, slideText, text;
+      bg = this.add.sprite(0, 0, 'background');
+      this.add.tween(bg).to({
+        alpha: 0
+      }, this.fadeSpeed).start();
+      deadBattery = this.add.sprite(this.world.centerX, this.world.centerY, 'full-battery');
+      deadBattery.alpha = 0;
+      deadBattery.anchor.setTo(.5);
+      this.add.tween(deadBattery).to({
+        alpha: 1
+      }, this.fadeSpeed).start();
+      text = this.add.text(this.world.centerX, this.world.centerY - 100, 'Well Done!');
+      text.anchor.setTo(0.5, 1);
+      text.align = 'center';
+      text.font = 'Helvetica Neue';
+      text.fontSize = 125;
+      text.fontWeight = 100;
+      text.fill = '#FFFFFF';
+      slideText = this.add.text(this.world.centerX, 1170, '> click to start');
+      slideText.anchor.setTo(0.5, 0.5);
+      slideText.alpha = 0;
+      slideText.font = 'Helvetica Neue';
+      slideText.fontSize = 48;
+      slideText.fontWeight = 200;
+      slideText.fill = '#FFFFFF';
+      bg.inputEnabled = true;
+      bg.events.onInputDown.add((function(_this) {
+        return function() {
+          if (slideText.alpha > 0) {
+            return window.location.reload();
+          }
+        };
+      })(this));
+      return setTimeout(((function(_this) {
+        return function() {
+          return _this.add.tween(slideText).to({
+            alpha: 0.8
+          }, 200).start();
+        };
+      })(this)), 1200);
+    };
+
+    return Victory;
 
   })();
 
@@ -92916,9 +93002,13 @@ _.extend(AppAtk, Backbone.Events);
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AppAtk.Views.Bullet = (function(_super) {
+    var SPLASH_RANGE;
+
     __extends(Bullet, _super);
 
-    Bullet.prototype.speed = 60;
+    Bullet.prototype.speed = 150;
+
+    SPLASH_RANGE = 120;
 
     function Bullet(game, tower) {
       this.tower = tower;
@@ -92945,10 +93035,14 @@ _.extend(AppAtk, Backbone.Events);
     };
 
     Bullet.prototype.hit = function() {
+      var damage;
+      damage = this.tower.model.get('damage');
       this.target.damage(this.tower.model.get('damage'));
       switch (this.tower.model.get('spriteIdx')) {
         case 2:
           return this.target.slowdown();
+        case 1:
+          return this._explode(damage);
       }
     };
 
@@ -92963,6 +93057,20 @@ _.extend(AppAtk, Backbone.Events);
         case 3:
           return 0x000000;
       }
+    };
+
+    Bullet.prototype._explode = function(damage) {
+      var emitter, monstersInRange;
+      monstersInRange = _.filter(game.wave.children, (function(_this) {
+        return function(monster) {
+          return monster.position.distance(_this.position) < SPLASH_RANGE;
+        };
+      })(this));
+      _.each(monstersInRange, function(monster) {
+        return monster.damage(damage);
+      });
+      emitter = new AppAtk.Views.MonsterParticles(game, this.x, this.y, '0xff0000', 50, 1500);
+      return game.add.existing(emitter);
     };
 
     return Bullet;
@@ -93083,14 +93191,19 @@ _.extend(AppAtk, Backbone.Events);
       })(this));
       this.gravity = 1;
       this.explode(this.lifespan, quantity);
+      this.counter = 0;
     }
 
     MonsterParticles.prototype.update = function() {
-      return this.forEachAlive((function(_this) {
+      this.counter += 1;
+      this.forEachAlive((function(_this) {
         return function(particle) {
           return particle.alpha = particle.lifespan / _this.lifespan;
         };
       })(this));
+      if (this.counter > 100) {
+        return this.kill();
+      }
     };
 
     return MonsterParticles;
@@ -93111,7 +93224,7 @@ _.extend(AppAtk, Backbone.Events);
 
     BASE_ROTATION_SPEED = 70;
 
-    SLOWDOWN_RATIO = 0.8;
+    SLOWDOWN_RATIO = 0.7;
 
     SLOWDOWN_COOLDOWN = 1200;
 
@@ -93183,6 +93296,9 @@ _.extend(AppAtk, Backbone.Events);
     MonsterView.prototype.damage = function() {
       var emitter;
       MonsterView.__super__.damage.apply(this, arguments);
+      if (this.health > 0) {
+        AppAtk.trigger('monster-hit');
+      }
       game.add.tween(this.scale).to({
         x: HIT_SCALE,
         y: HIT_SCALE
@@ -93617,6 +93733,7 @@ _.extend(AppAtk, Backbone.Events);
 
     TowerView.prototype.shoot = function() {
       var bullet;
+      AppAtk.trigger('tower-fired', this.model);
       bullet = new AppAtk.Views.Bullet(game, this);
       bullet.shootAt(this.target);
       this.bounceScale();
@@ -93751,6 +93868,8 @@ _.extend(AppAtk, Backbone.Events);
   game.state.add('game', new AppAtk.Game());
 
   game.state.add('gameOver', new AppAtk.GameOver());
+
+  game.state.add('victory', new AppAtk.Victory());
 
   game.state.start('boot');
 

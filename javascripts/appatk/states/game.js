@@ -58,13 +58,17 @@
 
     Game.prototype._endWave = function() {
       var message;
-      message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';
-      game.notification.showNotification("" + message + " Next wave in 3 seconds");
-      return setTimeout(((function(_this) {
-        return function() {
-          return _this._nextWave();
-        };
-      })(this)), 3000);
+      if (this.gameState.get('wave') === 5) {
+        return game.state.start('victory');
+      } else {
+        message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';
+        game.notification.showNotification("" + message + " Next wave in 3 seconds");
+        return setTimeout(((function(_this) {
+          return function() {
+            return _this._nextWave();
+          };
+        })(this)), 3000);
+      }
     };
 
     Game.prototype._nextWave = function() {

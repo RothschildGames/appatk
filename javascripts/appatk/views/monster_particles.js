@@ -22,14 +22,19 @@
       })(this));
       this.gravity = 1;
       this.explode(this.lifespan, quantity);
+      this.counter = 0;
     }
 
     MonsterParticles.prototype.update = function() {
-      return this.forEachAlive((function(_this) {
+      this.counter += 1;
+      this.forEachAlive((function(_this) {
         return function(particle) {
           return particle.alpha = particle.lifespan / _this.lifespan;
         };
       })(this));
+      if (this.counter > 100) {
+        return this.kill();
+      }
     };
 
     return MonsterParticles;

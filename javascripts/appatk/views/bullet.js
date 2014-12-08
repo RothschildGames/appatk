@@ -3,9 +3,13 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AppAtk.Views.Bullet = (function(_super) {
+    var SPLASH_RANGE;
+
     __extends(Bullet, _super);
 
-    Bullet.prototype.speed = 60;
+    Bullet.prototype.speed = 150;
+
+    SPLASH_RANGE = 120;
 
     function Bullet(game, tower) {
       this.tower = tower;
@@ -32,10 +36,14 @@
     };
 
     Bullet.prototype.hit = function() {
+      var damage;
+      damage = this.tower.model.get('damage');
       this.target.damage(this.tower.model.get('damage'));
       switch (this.tower.model.get('spriteIdx')) {
         case 2:
           return this.target.slowdown();
+        case 1:
+          return this._explode(damage);
       }
     };
 
@@ -50,6 +58,20 @@
         case 3:
           return 0x000000;
       }
+    };
+
+    Bullet.prototype._explode = function(damage) {
+      var emitter, monstersInRange;
+      monstersInRange = _.filter(game.wave.children, (function(_this) {
+        return function(monster) {
+          return monster.position.distance(_this.position) < SPLASH_RANGE;
+        };
+      })(this));
+      _.each(monstersInRange, function(monster) {
+        return monster.damage(damage);
+      });
+      emitter = new AppAtk.Views.MonsterParticles(game, this.x, this.y, '0xff0000', 50, 1500);
+      return game.add.existing(emitter);
     };
 
     return Bullet;

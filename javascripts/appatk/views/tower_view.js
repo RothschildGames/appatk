@@ -239,6 +239,7 @@
 
     TowerView.prototype.shoot = function() {
       var bullet;
+      AppAtk.trigger('tower-fired', this.model);
       bullet = new AppAtk.Views.Bullet(game, this);
       bullet.shootAt(this.target);
       this.bounceScale();

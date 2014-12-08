@@ -11,7 +11,7 @@
 
     BASE_ROTATION_SPEED = 70;
 
-    SLOWDOWN_RATIO = 0.8;
+    SLOWDOWN_RATIO = 0.7;
 
     SLOWDOWN_COOLDOWN = 1200;
 
@@ -83,6 +83,9 @@
     MonsterView.prototype.damage = function() {
       var emitter;
       MonsterView.__super__.damage.apply(this, arguments);
+      if (this.health > 0) {
+        AppAtk.trigger('monster-hit');
+      }
       game.add.tween(this.scale).to({
         x: HIT_SCALE,
         y: HIT_SCALE

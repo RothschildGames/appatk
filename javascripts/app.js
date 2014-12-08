@@ -13,6 +13,8 @@
 
   game.state.add('gameOver', new AppAtk.GameOver());
 
+  game.state.add('victory', new AppAtk.Victory());
+
   game.state.start('boot');
 
   window.game = game;
