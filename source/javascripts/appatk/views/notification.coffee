@@ -6,6 +6,9 @@ class AppAtk.Views.Notification extends Phaser.Graphics
     @drawRect(0,0,game.width, 128)
     @beginFill(0xffcc00, 1)
     @drawRoundedRect(30, 15, 40 ,40, 5)
+    @beginFill(0x757378, 1)
+    @drawRoundedRect((game.width  - 74 )/ 2, 110, 74 ,10, 7)
+
     game.add.existing(@)
 
     text = @game.add.text(92, 18, 'AppAtk')
