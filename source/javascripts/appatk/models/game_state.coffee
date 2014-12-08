@@ -4,6 +4,7 @@ class AppAtk.Models.GameState extends Backbone.Model
     health: 100
     gold: 10
     lowHealth: false
+    gameOver: false
 
   initialize: ->
     @listenTo(AppAtk, 'lost-life', @_lostLife)
@@ -16,6 +17,7 @@ class AppAtk.Models.GameState extends Backbone.Model
   _lostLife: (damage) ->
     @set('health', @get('health') - damage)
     @set('lowHealth', true) if @get('health') <= 20
+    @set('gameOver', true) if @get('health') <= 0
 
   _gotLoot: (loot) ->
     @set('gold', @get('gold') + loot)

@@ -32,10 +32,13 @@ class AppAtk.Game
 
     AppAtk.on('end-wave', => @_endWave())
 
-
     AppAtk.gameState.on('change:lowHealth', =>
       if AppAtk.gameState.get('lowHealth')
         game.notification.showNotification("Low Battery, be careful!", 600)
+    )
+    AppAtk.gameState.on('change:gameOver', =>
+      AppAtk.trigger('game-over')
+      game.state.start('gameOver')
     )
 
   _endWave: ->
