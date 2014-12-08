@@ -1,16 +1,25 @@
-class AppAtk.Victory
+class AppAtk.EndGame
   fadeSpeed: 300
+
+  constructor: (gameOver) ->
+    if gameOver
+      @image = 'dead-battery'
+      @text = 'Game Over'
+    else
+      @image = 'full-battery'
+      @text = 'You Won!'
+
 
   preload: ->
     bg = @add.sprite(0, 0, 'background')
     @add.tween(bg).to({alpha: 0}, @fadeSpeed).start()
 
-    deadBattery = @add.sprite(@world.centerX, @world.centerY, 'full-battery')
-    deadBattery.alpha = 0
-    deadBattery.anchor.setTo(.5)
-    @add.tween(deadBattery).to({alpha: 1}, @fadeSpeed).start()
+    battery = @add.sprite(@world.centerX, @world.centerY, @image)
+    battery.alpha = 0
+    battery.anchor.setTo(.5)
+    @add.tween(battery).to({alpha: 1}, @fadeSpeed).start()
 
-    text = @add.text(@world.centerX, @world.centerY - 100, 'Well Done!')
+    text = @add.text(@world.centerX, @world.centerY - 100, @text)
     text.anchor.setTo(0.5, 1)
     text.align = 'center'
     text.font = 'Helvetica Neue'
@@ -29,8 +38,7 @@ class AppAtk.Victory
     bg.inputEnabled = true
     bg.events.onInputDown.add =>
       if slideText.alpha > 0
-        window.location.reload()
-#        game.state.start('game')
+        game.state.start('game')
 
     setTimeout(
       (=> @add.tween(slideText).to({alpha: 0.8}, 200).start())

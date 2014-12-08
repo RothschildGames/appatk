@@ -4,7 +4,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
   quick: 80
   status: null
 
-  constructor: (game, x, y, @model, @group) ->
+  constructor: (@game, x, y, @model, @group) ->
     super(game, x, y, 'apps', model.get('spriteIdx'))
     @anchor.setTo(.5, .5)
     game.add.existing(@)
@@ -133,7 +133,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       @status = 'targeting'
 
   onGoldChangeForStore: ->
-    return unless @status == 'store'
+    return unless @alive && @status == 'store'
     if @model.get('price') <= AppAtk.gameState.get('gold')
       @alpha = 1
       @inputEnabled = true
