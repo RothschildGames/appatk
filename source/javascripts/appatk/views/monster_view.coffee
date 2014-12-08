@@ -53,6 +53,7 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
 
   damage: ->
     super
+    AppAtk.trigger('monster-hit') if @health > 0
     game.add.tween(@scale).to({x: HIT_SCALE, y: HIT_SCALE}, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).to({x: 1, y: 1}, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).start()
     emitter = new AppAtk.Views.MonsterParticles(game, @x, @y, @monster.get('tint'), 15, 250)
     game.add.existing(emitter)
