@@ -25,6 +25,7 @@ class AppAtk.GameOver
     slideText.fontSize = 48
     slideText.fontWeight = 200
     slideText.fill = '#FFFFFF'
+
     slideText.inputEnabled = true
     slideText.events.onInputDown.add =>
       if slideText.alpha > 0
