@@ -1,22 +1,21 @@
 # MUST HAVE
 - Monster animation bug
-- Loading Screen + Start Screen(iphone lock screen)
-- First time walkthrough - explain what everything is
-- Game Over Screen
+- First time walkthrough - explain what everything is YB
 - You won screen
 - Splash tower should do splash damage + animation
-- Timer between waves - SD.
 - Work on numbers (wave/monsters/towers) to balance the game
-- Pixel perfect placement of towers.
+- Monster hit animation
+- Better Bullets
 
 # NEED TO DO (non game related)
-- Facebook Open Graph tags
-- Favicon + Mobile Favicon
+- Facebook Open Graph tags YB
+- Favicon + Mobile Favicon YB
 - Test on Mobile
-- Readme for repo (change repo name as well?).
+- Readme for repo (change repo name as well?). SD
 
 # NICE TO HAVE
 - Different tower icons
 - Different sound for towers
 - Better bullet graphics (different one for each tower?).
 - More towers + random pool of towers each game.
+- Pixel perfect placement of towers.
