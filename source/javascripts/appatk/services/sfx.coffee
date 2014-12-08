@@ -19,7 +19,7 @@ class AppAtk.Sfx
       soundObjects = []
       for file, idx in values
         soundKey = "#{key}#{idx}"
-        game.load.audio(soundKey, "/sfx/#{file}.wav")
+        game.load.audio(soundKey, "sfx/#{file}.wav")
         soundObjects.push soundKey
       @sounds[key] = soundObjects
 
