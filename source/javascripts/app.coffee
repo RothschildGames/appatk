@@ -40,6 +40,12 @@ game = new Phaser.Game 250*3, 445*3, Phaser.CANVAS, 'drawing-canvas',
 
     AppAtk.on('end-wave', => @_endWave())
 
+
+    AppAtk.gameState.on('change:health', =>
+      if (AppAtk.gameState.get('health') <= 20)
+        game.notification.showNotification("Low Battery, be careful!")
+    )
+
   _endWave: ->
     message = if @wave.killed > @wave.missed then 'Great job!' else 'Let\'s do better next time.'
     game.notification.showNotification("#{message} Next wave in 3 seconds")
