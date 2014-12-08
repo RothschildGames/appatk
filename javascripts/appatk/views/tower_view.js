@@ -14,6 +14,7 @@
     TowerView.prototype.status = null;
 
     function TowerView(game, x, y, model, group) {
+      this.game = game;
       this.model = model;
       this.group = group;
       TowerView.__super__.constructor.call(this, game, x, y, 'apps', model.get('spriteIdx'));
@@ -251,7 +252,7 @@
     };
 
     TowerView.prototype.onGoldChangeForStore = function() {
-      if (this.status !== 'store') {
+      if (!(this.alive && this.status === 'store')) {
         return;
       }
       if (this.model.get('price') <= AppAtk.gameState.get('gold')) {

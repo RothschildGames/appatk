@@ -92611,6 +92611,68 @@ _.extend(AppAtk, Backbone.Events);
 
 }).call(this);
 (function() {
+  AppAtk.EndGame = (function() {
+    EndGame.prototype.fadeSpeed = 300;
+
+    function EndGame(gameOver) {
+      if (gameOver) {
+        this.image = 'dead-battery';
+        this.text = 'Game Over';
+      } else {
+        this.image = 'full-battery';
+        this.text = 'You Won!';
+      }
+    }
+
+    EndGame.prototype.preload = function() {
+      var battery, bg, slideText, text;
+      bg = this.add.sprite(0, 0, 'background');
+      this.add.tween(bg).to({
+        alpha: 0
+      }, this.fadeSpeed).start();
+      battery = this.add.sprite(this.world.centerX, this.world.centerY, this.image);
+      battery.alpha = 0;
+      battery.anchor.setTo(.5);
+      this.add.tween(battery).to({
+        alpha: 1
+      }, this.fadeSpeed).start();
+      text = this.add.text(this.world.centerX, this.world.centerY - 100, this.text);
+      text.anchor.setTo(0.5, 1);
+      text.align = 'center';
+      text.font = 'Helvetica Neue';
+      text.fontSize = 125;
+      text.fontWeight = 100;
+      text.fill = '#FFFFFF';
+      slideText = this.add.text(this.world.centerX, 1170, '> click to start');
+      slideText.anchor.setTo(0.5, 0.5);
+      slideText.alpha = 0;
+      slideText.font = 'Helvetica Neue';
+      slideText.fontSize = 48;
+      slideText.fontWeight = 200;
+      slideText.fill = '#FFFFFF';
+      bg.inputEnabled = true;
+      bg.events.onInputDown.add((function(_this) {
+        return function() {
+          if (slideText.alpha > 0) {
+            return game.state.start('game');
+          }
+        };
+      })(this));
+      return setTimeout(((function(_this) {
+        return function() {
+          return _this.add.tween(slideText).to({
+            alpha: 0.8
+          }, 200).start();
+        };
+      })(this)), 1200);
+    };
+
+    return EndGame;
+
+  })();
+
+}).call(this);
+(function() {
   AppAtk.Game = (function() {
     function Game() {}
 
@@ -92624,6 +92686,7 @@ _.extend(AppAtk, Backbone.Events);
 
     Game.prototype.create = function() {
       var bg, homeButton, notification;
+      ga('send', 'event', 'game', 'start');
       bg = game.add.sprite(0, 0, 'background');
       AppAtk.sfx.start();
       this.hud.create();
@@ -92663,6 +92726,7 @@ _.extend(AppAtk, Backbone.Events);
       return AppAtk.gameState.on('change:gameOver', (function(_this) {
         return function() {
           AppAtk.trigger('game-over');
+          ga('send', 'event', 'game', 'lost');
           return game.state.start('gameOver');
         };
       })(this));
@@ -92671,6 +92735,7 @@ _.extend(AppAtk, Backbone.Events);
     Game.prototype._endWave = function() {
       var message;
       if (this.gameState.get('wave') === 5) {
+        ga('send', 'event', 'game', 'won');
         return game.state.start('victory');
       } else {
         message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';
@@ -92702,72 +92767,21 @@ _.extend(AppAtk, Backbone.Events);
 
 }).call(this);
 (function() {
-  AppAtk.GameOver = (function() {
-    function GameOver() {}
-
-    GameOver.prototype.fadeSpeed = 300;
-
-    GameOver.prototype.preload = function() {
-      var bg, deadBattery, slideText, text;
-      bg = this.add.sprite(0, 0, 'background');
-      this.add.tween(bg).to({
-        alpha: 0
-      }, this.fadeSpeed).start();
-      deadBattery = this.add.sprite(this.world.centerX, this.world.centerY, 'dead-battery');
-      deadBattery.alpha = 0;
-      deadBattery.anchor.setTo(.5);
-      this.add.tween(deadBattery).to({
-        alpha: 1
-      }, this.fadeSpeed).start();
-      text = this.add.text(this.world.centerX, this.world.centerY - 100, 'Game Over');
-      text.anchor.setTo(0.5, 1);
-      text.align = 'center';
-      text.font = 'Helvetica Neue';
-      text.fontSize = 125;
-      text.fontWeight = 100;
-      text.fill = '#FFFFFF';
-      slideText = this.add.text(this.world.centerX, 1170, '> click to start');
-      slideText.anchor.setTo(0.5, 0.5);
-      slideText.alpha = 0;
-      slideText.font = 'Helvetica Neue';
-      slideText.fontSize = 48;
-      slideText.fontWeight = 200;
-      slideText.fill = '#FFFFFF';
-      bg.inputEnabled = true;
-      bg.events.onInputDown.add((function(_this) {
-        return function() {
-          if (slideText.alpha > 0) {
-            return window.location.reload();
-          }
-        };
-      })(this));
-      return setTimeout(((function(_this) {
-        return function() {
-          return _this.add.tween(slideText).to({
-            alpha: 0.8
-          }, 200).start();
-        };
-      })(this)), 1200);
-    };
-
-    return GameOver;
-
-  })();
-
-}).call(this);
-(function() {
   AppAtk.Help = (function() {
     function Help() {}
 
     Help.prototype.preload = function() {
       this.gameState = new AppAtk.Models.GameState();
-      return this.hud = new AppAtk.Views.HUD(this, this.gameState);
+      AppAtk.gameState = this.gameState;
+      this.hud = new AppAtk.Views.HUD(this, this.gameState);
+      return this.shop = new AppAtk.Views.Shop(game);
     };
 
     Help.prototype.create = function() {
       var bg, help;
       bg = this.add.sprite(0, 0, 'background');
       this.hud.create();
+      this.shop.create();
       help = this.add.sprite(0, 0, 'help');
       help.alpha = 0;
       this.add.tween(help).to({
@@ -92858,60 +92872,6 @@ _.extend(AppAtk, Backbone.Events);
     };
 
     return Loader;
-
-  })();
-
-}).call(this);
-(function() {
-  AppAtk.Victory = (function() {
-    function Victory() {}
-
-    Victory.prototype.fadeSpeed = 300;
-
-    Victory.prototype.preload = function() {
-      var bg, deadBattery, slideText, text;
-      bg = this.add.sprite(0, 0, 'background');
-      this.add.tween(bg).to({
-        alpha: 0
-      }, this.fadeSpeed).start();
-      deadBattery = this.add.sprite(this.world.centerX, this.world.centerY, 'full-battery');
-      deadBattery.alpha = 0;
-      deadBattery.anchor.setTo(.5);
-      this.add.tween(deadBattery).to({
-        alpha: 1
-      }, this.fadeSpeed).start();
-      text = this.add.text(this.world.centerX, this.world.centerY - 100, 'Well Done!');
-      text.anchor.setTo(0.5, 1);
-      text.align = 'center';
-      text.font = 'Helvetica Neue';
-      text.fontSize = 125;
-      text.fontWeight = 100;
-      text.fill = '#FFFFFF';
-      slideText = this.add.text(this.world.centerX, 1170, '> click to start');
-      slideText.anchor.setTo(0.5, 0.5);
-      slideText.alpha = 0;
-      slideText.font = 'Helvetica Neue';
-      slideText.fontSize = 48;
-      slideText.fontWeight = 200;
-      slideText.fill = '#FFFFFF';
-      bg.inputEnabled = true;
-      bg.events.onInputDown.add((function(_this) {
-        return function() {
-          if (slideText.alpha > 0) {
-            return window.location.reload();
-          }
-        };
-      })(this));
-      return setTimeout(((function(_this) {
-        return function() {
-          return _this.add.tween(slideText).to({
-            alpha: 0.8
-          }, 200).start();
-        };
-      })(this)), 1200);
-    };
-
-    return Victory;
 
   })();
 
@@ -93508,6 +93468,7 @@ _.extend(AppAtk, Backbone.Events);
     TowerView.prototype.status = null;
 
     function TowerView(game, x, y, model, group) {
+      this.game = game;
       this.model = model;
       this.group = group;
       TowerView.__super__.constructor.call(this, game, x, y, 'apps', model.get('spriteIdx'));
@@ -93745,7 +93706,7 @@ _.extend(AppAtk, Backbone.Events);
     };
 
     TowerView.prototype.onGoldChangeForStore = function() {
-      if (this.status !== 'store') {
+      if (!(this.alive && this.status === 'store')) {
         return;
       }
       if (this.model.get('price') <= AppAtk.gameState.get('gold')) {
@@ -93867,9 +93828,9 @@ _.extend(AppAtk, Backbone.Events);
 
   game.state.add('game', new AppAtk.Game());
 
-  game.state.add('gameOver', new AppAtk.GameOver());
+  game.state.add('gameOver', new AppAtk.EndGame(true));
 
-  game.state.add('victory', new AppAtk.Victory());
+  game.state.add('victory', new AppAtk.EndGame(false));
 
   game.state.start('boot');
 

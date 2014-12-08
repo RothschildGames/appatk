@@ -12,6 +12,7 @@
 
     Game.prototype.create = function() {
       var bg, homeButton, notification;
+      ga('send', 'event', 'game', 'start');
       bg = game.add.sprite(0, 0, 'background');
       AppAtk.sfx.start();
       this.hud.create();
@@ -51,6 +52,7 @@
       return AppAtk.gameState.on('change:gameOver', (function(_this) {
         return function() {
           AppAtk.trigger('game-over');
+          ga('send', 'event', 'game', 'lost');
           return game.state.start('gameOver');
         };
       })(this));
@@ -59,6 +61,7 @@
     Game.prototype._endWave = function() {
       var message;
       if (this.gameState.get('wave') === 5) {
+        ga('send', 'event', 'game', 'won');
         return game.state.start('victory');
       } else {
         message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';

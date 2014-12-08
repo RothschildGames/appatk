@@ -4,13 +4,16 @@
 
     Help.prototype.preload = function() {
       this.gameState = new AppAtk.Models.GameState();
-      return this.hud = new AppAtk.Views.HUD(this, this.gameState);
+      AppAtk.gameState = this.gameState;
+      this.hud = new AppAtk.Views.HUD(this, this.gameState);
+      return this.shop = new AppAtk.Views.Shop(game);
     };
 
     Help.prototype.create = function() {
       var bg, help;
       bg = this.add.sprite(0, 0, 'background');
       this.hud.create();
+      this.shop.create();
       help = this.add.sprite(0, 0, 'help');
       help.alpha = 0;
       this.add.tween(help).to({

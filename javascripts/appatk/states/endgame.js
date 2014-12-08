@@ -1,22 +1,30 @@
 (function() {
-  AppAtk.Victory = (function() {
-    function Victory() {}
+  AppAtk.EndGame = (function() {
+    EndGame.prototype.fadeSpeed = 300;
 
-    Victory.prototype.fadeSpeed = 300;
+    function EndGame(gameOver) {
+      if (gameOver) {
+        this.image = 'dead-battery';
+        this.text = 'Game Over';
+      } else {
+        this.image = 'full-battery';
+        this.text = 'You Won!';
+      }
+    }
 
-    Victory.prototype.preload = function() {
-      var bg, deadBattery, slideText, text;
+    EndGame.prototype.preload = function() {
+      var battery, bg, slideText, text;
       bg = this.add.sprite(0, 0, 'background');
       this.add.tween(bg).to({
         alpha: 0
       }, this.fadeSpeed).start();
-      deadBattery = this.add.sprite(this.world.centerX, this.world.centerY, 'full-battery');
-      deadBattery.alpha = 0;
-      deadBattery.anchor.setTo(.5);
-      this.add.tween(deadBattery).to({
+      battery = this.add.sprite(this.world.centerX, this.world.centerY, this.image);
+      battery.alpha = 0;
+      battery.anchor.setTo(.5);
+      this.add.tween(battery).to({
         alpha: 1
       }, this.fadeSpeed).start();
-      text = this.add.text(this.world.centerX, this.world.centerY - 100, 'Well Done!');
+      text = this.add.text(this.world.centerX, this.world.centerY - 100, this.text);
       text.anchor.setTo(0.5, 1);
       text.align = 'center';
       text.font = 'Helvetica Neue';
@@ -34,7 +42,7 @@
       bg.events.onInputDown.add((function(_this) {
         return function() {
           if (slideText.alpha > 0) {
-            return window.location.reload();
+            return game.state.start('game');
           }
         };
       })(this));
@@ -47,7 +55,7 @@
       })(this)), 1200);
     };
 
-    return Victory;
+    return EndGame;
 
   })();
 

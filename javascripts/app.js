@@ -11,9 +11,9 @@
 
   game.state.add('game', new AppAtk.Game());
 
-  game.state.add('gameOver', new AppAtk.GameOver());
+  game.state.add('gameOver', new AppAtk.EndGame(true));
 
-  game.state.add('victory', new AppAtk.Victory());
+  game.state.add('victory', new AppAtk.EndGame(false));
 
   game.state.start('boot');
 
