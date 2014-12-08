@@ -23,6 +23,13 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
     @events.onInputOut.add =>
       @tweenScale(1, @slow)
 
+    @events.onDragStart.add =>
+      # TODO: Remove Radius
+      g = @game.add.graphics()
+      g.beginFill(0xFFFFFF, 0.2)
+      g.drawCircle(0, 0, @model.get('radius') * 2)
+      @addChild(g)
+      @radiusCircle = g
     @events.onDragStop.add =>
       location = _.min(AppAtk.Utils.Coords.TOWER_LOCATIONS, (loc) => @position.distance(loc))
       @stopEvents()
@@ -42,6 +49,8 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
     @game.structure.addTowerAt(@, location.row, location.col)
     @game.add.tween(@).to({x: location.x, y: location.y, alpha: 1}, @quick, Phaser.Easing.Linear.None, true)
     @tweenScale(1, @quick).onComplete.add =>
+      @game.add.tween(@radiusCircle.scale).to({x: 0, y: 0}, 1200, Phaser.Easing.Bounce.Out, true, 2200).onComplete.add =>
+        @radiusCircle.destroy()
       @cooldown =>
         @startSeeking()
 
