@@ -41,7 +41,7 @@ AppAtk.Models.shops = new AppAtk.Models.Shops([
     position: 1
 
     price: 10
-    cooldown: 300
+    cooldown: 400
     damage: 200
     radius: 200
   },
