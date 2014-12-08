@@ -7,12 +7,11 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
   SLOWDOWN_COOLDOWN = 1200 #ms
 
   constructor: (game, x, y, @monster) ->
-    super(game, x, y, 'monster')
+    super(game, x, y, @monster.get('image'))
     @health = @monster.get('hp')
     @anchor.setTo(0.5, 0.5)
     @animations.add('walk', [0, 1, 2, 3, 3, 2, 1, 0, 6, 5, 4, 5, 6], 6, true)
     @animations.play('walk')
-    @tint = @monster.get('tint')
     @scale = new Phaser.Point(@monster.get('scale'), @monster.get('scale'))
     @events.onKilled.add(=> @_onKilled())
 

@@ -1,11 +1,12 @@
 # MUST HAVE
-- Monster animation bug
 - First time walkthrough - explain what everything is YB
-- You won screen
-- Splash tower should do splash damage + animation
-- Work on numbers (wave/monsters/towers) to balance the game
-- Monster hit animation
-- Better Bullets
+- You won screen - YB.
+- Splash tower should do splash damage + animation - SD.
+- Work on numbers (wave/monsters/towers) to balance the game - SD.
+- Monster hit animation - SD.
+- Better Bullets - SD.
+- Installation sound - SD.
+- Fire sound - SD.
 
 # NEED TO DO (non game related)
 - Test on Mobile

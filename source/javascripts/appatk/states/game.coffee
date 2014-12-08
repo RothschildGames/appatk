@@ -25,7 +25,7 @@ class AppAtk.Game
     game.notification = notification
 
     homeButton = document.getElementById('home-button')
-    homeButton.onclick = => @_nextWave()
+    homeButton?.onclick = => @_nextWave()
 
     game.notification.showNotification('Next wave in 2 seconds')
     setTimeout(( => @_generateWave()), 2000)
