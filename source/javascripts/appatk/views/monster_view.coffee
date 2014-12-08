@@ -3,7 +3,7 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
   SPEED_SLOW_MULTIPLIER = 8
   BASE_ROTATION_SPEED = 70
 
-  SLOWDOWN_RATIO = 0.8
+  SLOWDOWN_RATIO = 0.7
   SLOWDOWN_COOLDOWN = 1200 #ms
 
   HIT_SPEED = 100

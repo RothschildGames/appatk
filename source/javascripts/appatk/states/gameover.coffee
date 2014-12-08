@@ -26,8 +26,8 @@ class AppAtk.GameOver
     slideText.fontWeight = 200
     slideText.fill = '#FFFFFF'
 
-    slideText.inputEnabled = true
-    slideText.events.onInputDown.add =>
+    bg.inputEnabled = true
+    bg.events.onInputDown.add =>
       if slideText.alpha > 0
         game.state.start('game')
 
