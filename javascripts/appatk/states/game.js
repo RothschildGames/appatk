@@ -23,11 +23,13 @@
       notification = new AppAtk.Views.Notification(game);
       game.notification = notification;
       homeButton = document.getElementById('home-button');
-      homeButton.onclick = (function(_this) {
-        return function() {
-          return _this._nextWave();
-        };
-      })(this);
+      if (homeButton != null) {
+        homeButton.onclick = (function(_this) {
+          return function() {
+            return _this._nextWave();
+          };
+        })(this);
+      }
       game.notification.showNotification('Next wave in 2 seconds');
       setTimeout(((function(_this) {
         return function() {

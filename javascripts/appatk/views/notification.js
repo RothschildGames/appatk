@@ -44,7 +44,7 @@
         message = "Next wave in 30s";
       }
       if (delay == null) {
-        delay = 1400;
+        delay = 1800;
       }
       if (cb == null) {
         cb = function() {};

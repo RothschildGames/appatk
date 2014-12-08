@@ -1,6 +1,6 @@
 (function() {
   AppAtk.Sfx = (function() {
-    Sfx.prototype.music = 'RinbackTone.ogg';
+    Sfx.prototype.music = ['sfx/RinbackTone.ogg', 'sfx/RinbackTone.mp3', 'sfx/RinbackTone.m4a'];
 
     Sfx.prototype.soundsSources = {
       hit: ['Jump8', 'Jump15', 'Jump17'],
@@ -25,7 +25,7 @@
         }
         this.sounds[key] = soundObjects;
       }
-      game.load.audio('bgmusic', "sfx/" + this.music);
+      game.load.audio('bgmusic', this.music);
     }
 
     Sfx.prototype.start = function() {

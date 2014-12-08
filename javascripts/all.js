@@ -92446,56 +92446,61 @@ _.extend(AppAtk, Backbone.Events);
       amount: 30,
       interval: 65,
       monster: new AppAtk.Models.Monster({
-        tint: 0xffff00,
+        tint: 0xffffff,
         scale: 1,
         hp: 200,
         damage: 1,
         speed: 1,
-        loot: 1
+        loot: 1,
+        image: 'monster0'
       })
     }, {
       amount: 35,
       interval: 60,
       monster: new AppAtk.Models.Monster({
-        tint: 0xfF991F,
+        tint: 0xffde3f,
         scale: 1.05,
         hp: 300,
         damage: 2,
         speed: 1.1,
-        loot: 2
+        loot: 2,
+        image: 'monster1'
       })
     }, {
       amount: 40,
       interval: 55,
       monster: new AppAtk.Models.Monster({
-        tint: 0x884400,
+        tint: 0x7a3030,
         scale: 1.1,
         hp: 400,
         damage: 4,
         speed: 1,
-        loot: 3
+        loot: 3,
+        image: 'monster2'
       })
     }, {
       amount: 55,
       interval: 50,
       monster: new AppAtk.Models.Monster({
-        tint: 0xffffaa,
+        tint: 0x432929,
         scale: 1.15,
         hp: 500,
         damage: 6,
         speed: 1.2,
-        loot: 4
+        loot: 4,
+        image: 'monster3'
       })
     }, {
       amount: 60,
       interval: 50,
       monster: new AppAtk.Models.Monster({
-        tint: 0x333333,
+        tint: 0x8d4000,
         scale: 1.2,
         hp: 600,
         damage: 8,
         speed: 1.3,
-        loot: 5
+        loot: 5,
+        image: 'monster4'
       })
     }
   ]);
@@ -92503,7 +92508,7 @@ _.extend(AppAtk, Backbone.Events);
 }).call(this);
 (function() {
   AppAtk.Sfx = (function() {
-    Sfx.prototype.music = 'RinbackTone.ogg';
+    Sfx.prototype.music = ['sfx/RinbackTone.ogg', 'sfx/RinbackTone.mp3', 'sfx/RinbackTone.m4a'];
 
     Sfx.prototype.soundsSources = {
       hit: ['Jump8', 'Jump15', 'Jump17'],
@@ -92528,7 +92533,7 @@ _.extend(AppAtk, Backbone.Events);
         }
         this.sounds[key] = soundObjects;
       }
-      game.load.audio('bgmusic', "sfx/" + this.music);
+      game.load.audio('bgmusic', this.music);
     }
 
     Sfx.prototype.start = function() {
@@ -92603,11 +92608,13 @@ _.extend(AppAtk, Backbone.Events);
       notification = new AppAtk.Views.Notification(game);
       game.notification = notification;
       homeButton = document.getElementById('home-button');
-      homeButton.onclick = (function(_this) {
-        return function() {
-          return _this._nextWave();
-        };
-      })(this);
+      if (homeButton != null) {
+        homeButton.onclick = (function(_this) {
+          return function() {
+            return _this._nextWave();
+          };
+        })(this);
+      }
       game.notification.showNotification('Next wave in 2 seconds');
       setTimeout(((function(_this) {
         return function() {
@@ -92718,8 +92725,45 @@ _.extend(AppAtk, Backbone.Events);
 
 }).call(this);
 (function() {
+  AppAtk.Help = (function() {
+    function Help() {}
+
+    Help.prototype.preload = function() {
+      this.gameState = new AppAtk.Models.GameState();
+      return this.hud = new AppAtk.Views.HUD(this, this.gameState);
+    };
+
+    Help.prototype.create = function() {
+      var bg, help;
+      bg = this.add.sprite(0, 0, 'background');
+      this.hud.create();
+      help = this.add.sprite(0, 0, 'help');
+      help.alpha = 0;
+      this.add.tween(help).to({
+        alpha: 1
+      }, 300).start();
+      help.inputEnabled = true;
+      return help.events.onInputDown.add((function(_this) {
+        return function() {
+          return game.state.start('game');
+        };
+      })(this));
+    };
+
+    return Help;
+
+  })();
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   AppAtk.Loader = (function() {
-    function Loader() {}
+    function Loader() {
+      this.startGame = __bind(this.startGame, this);
+    }
+
+    Loader.prototype.ready = false;
 
     Loader.prototype.preload = function() {
       this._createLoadingUI();
@@ -92743,14 +92787,8 @@ _.extend(AppAtk, Backbone.Events);
       slideText.fontSize = 48;
       slideText.fontWeight = 200;
       slideText.fill = '#FFFFFF';
-      slideText.inputEnabled = true;
-      slideText.events.onInputDown.add((function(_this) {
-        return function() {
-          if (slideText.alpha > 0) {
-            return game.state.start('game');
-          }
-        };
-      })(this));
+      bg.inputEnabled = true;
+      bg.events.onInputDown.add(this.startGame);
       this.load.onFileComplete.add((function(_this) {
         return function() {
           return text.text = "" + _this.load.progress + "%";
@@ -92758,17 +92796,29 @@ _.extend(AppAtk, Backbone.Events);
       })(this));
       return this.load.onLoadComplete.add((function(_this) {
         return function() {
-          return _this.add.tween(slideText).to({
+          _this.add.tween(slideText).to({
             alpha: 0.8
           }, 200).start();
+          return _this.ready = true;
         };
       })(this));
     };
 
+    Loader.prototype.startGame = function() {
+      if (this.ready) {
+        return this.state.start('help');
+      }
+    };
+
     Loader.prototype._loadGameAssets = function() {
       this.load.image('background', 'images/bg.png');
+      this.load.image('help', 'images/help.png');
       this.load.image('death-particle', 'images/death-particle.png');
-      this.load.spritesheet('monster', 'images/monster.png', 42, 33);
+      this.load.spritesheet('monster0', 'images/monster0.png', 42, 33);
+      this.load.spritesheet('monster1', 'images/monster1.png', 42, 33);
+      this.load.spritesheet('monster2', 'images/monster2.png', 42, 33);
+      this.load.spritesheet('monster3', 'images/monster3.png', 42, 33);
+      this.load.spritesheet('monster4', 'images/monster4.png', 42, 33);
       this.load.image('battery', 'images/battery.png');
       this.load.image('dead-battery', 'images/dead-battery.png');
       this.load.spritesheet('apps', 'images/apps.png', 120, 119);
@@ -93013,15 +93063,19 @@ _.extend(AppAtk, Backbone.Events);
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  AppAtk.Views.MonsterDeath = (function(_super) {
-    __extends(MonsterDeath, _super);
+  AppAtk.Views.MonsterParticles = (function(_super) {
+    __extends(MonsterParticles, _super);
 
-    function MonsterDeath(game, x, y, color) {
-      var quantity;
-      quantity = 25;
-      MonsterDeath.__super__.constructor.call(this, game, x, y, quantity);
+    function MonsterParticles(game, x, y, color, quantity, lifespan) {
+      if (quantity == null) {
+        quantity = 25;
+      }
+      if (lifespan == null) {
+        lifespan = 1000;
+      }
+      MonsterParticles.__super__.constructor.call(this, game, x, y, quantity);
       this.makeParticles('death-particle');
-      this.lifespan = 1000;
+      this.lifespan = lifespan;
       this.forEach((function(_this) {
         return function(particle) {
           return particle.tint = color;
@@ -93031,7 +93085,7 @@ _.extend(AppAtk, Backbone.Events);
       this.explode(this.lifespan, quantity);
     }
 
-    MonsterDeath.prototype.update = function() {
+    MonsterParticles.prototype.update = function() {
       return this.forEachAlive((function(_this) {
         return function(particle) {
           return particle.alpha = particle.lifespan / _this.lifespan;
@@ -93039,7 +93093,7 @@ _.extend(AppAtk, Backbone.Events);
       })(this));
     };
 
-    return MonsterDeath;
+    return MonsterParticles;
 
   })(Phaser.Particles.Arcade.Emitter);
 
@@ -93049,7 +93103,7 @@ _.extend(AppAtk, Backbone.Events);
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AppAtk.Views.MonsterView = (function(_super) {
-    var BASE_ROTATION_SPEED, SLOWDOWN_COOLDOWN, SLOWDOWN_RATIO, SPEED_SLOW_MULTIPLIER;
+    var BASE_ROTATION_SPEED, HIT_SCALE, HIT_SPEED, SLOWDOWN_COOLDOWN, SLOWDOWN_RATIO, SPEED_SLOW_MULTIPLIER;
 
     __extends(MonsterView, _super);
 
@@ -93061,14 +93115,17 @@ _.extend(AppAtk, Backbone.Events);
 
     SLOWDOWN_COOLDOWN = 1200;
 
+    HIT_SPEED = 100;
+
+    HIT_SCALE = 0.7;
+
     function MonsterView(game, x, y, monster) {
       this.monster = monster;
-      MonsterView.__super__.constructor.call(this, game, x, y, 'monster');
+      MonsterView.__super__.constructor.call(this, game, x, y, this.monster.get('image'));
       this.health = this.monster.get('hp');
       this.anchor.setTo(0.5, 0.5);
       this.animations.add('walk', [0, 1, 2, 3, 3, 2, 1, 0, 6, 5, 4, 5, 6], 6, true);
       this.animations.play('walk');
-      this.tint = this.monster.get('tint');
       this.scale = new Phaser.Point(this.monster.get('scale'), this.monster.get('scale'));
       this.events.onKilled.add((function(_this) {
         return function() {
@@ -93119,7 +93176,21 @@ _.extend(AppAtk, Backbone.Events);
       var emitter;
       this.monsterTween.stop();
       AppAtk.trigger('monster-killed', this.monster.get('loot'));
-      emitter = new AppAtk.Views.MonsterDeath(game, this.x, this.y, this.tint);
+      emitter = new AppAtk.Views.MonsterParticles(game, this.x, this.y, this.monster.get('tint'));
+      return game.add.existing(emitter);
+    };
+
+    MonsterView.prototype.damage = function() {
+      var emitter;
+      MonsterView.__super__.damage.apply(this, arguments);
+      game.add.tween(this.scale).to({
+        x: HIT_SCALE,
+        y: HIT_SCALE
+      }, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).to({
+        x: 1,
+        y: 1
+      }, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).start();
+      emitter = new AppAtk.Views.MonsterParticles(game, this.x, this.y, this.monster.get('tint'), 15, 250);
       return game.add.existing(emitter);
     };
 
@@ -93185,7 +93256,7 @@ _.extend(AppAtk, Backbone.Events);
         message = "Next wave in 30s";
       }
       if (delay == null) {
-        delay = 1400;
+        delay = 1800;
       }
       if (cb == null) {
         cb = function() {};
@@ -93674,6 +93745,8 @@ _.extend(AppAtk, Backbone.Events);
   game.state.add('boot', new AppAtk.Boot());
 
   game.state.add('loader', new AppAtk.Loader());
+
+  game.state.add('help', new AppAtk.Help());
 
   game.state.add('game', new AppAtk.Game());
 

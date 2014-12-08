@@ -1,6 +1,12 @@
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   AppAtk.Loader = (function() {
-    function Loader() {}
+    function Loader() {
+      this.startGame = __bind(this.startGame, this);
+    }
+
+    Loader.prototype.ready = false;
 
     Loader.prototype.preload = function() {
       this._createLoadingUI();
@@ -24,14 +30,8 @@
       slideText.fontSize = 48;
       slideText.fontWeight = 200;
       slideText.fill = '#FFFFFF';
-      slideText.inputEnabled = true;
-      slideText.events.onInputDown.add((function(_this) {
-        return function() {
-          if (slideText.alpha > 0) {
-            return game.state.start('game');
-          }
-        };
-      })(this));
+      bg.inputEnabled = true;
+      bg.events.onInputDown.add(this.startGame);
       this.load.onFileComplete.add((function(_this) {
         return function() {
           return text.text = "" + _this.load.progress + "%";
@@ -39,17 +39,29 @@
       })(this));
       return this.load.onLoadComplete.add((function(_this) {
         return function() {
-          return _this.add.tween(slideText).to({
+          _this.add.tween(slideText).to({
             alpha: 0.8
           }, 200).start();
+          return _this.ready = true;
         };
       })(this));
     };
 
+    Loader.prototype.startGame = function() {
+      if (this.ready) {
+        return this.state.start('help');
+      }
+    };
+
     Loader.prototype._loadGameAssets = function() {
       this.load.image('background', 'images/bg.png');
+      this.load.image('help', 'images/help.png');
       this.load.image('death-particle', 'images/death-particle.png');
-      this.load.spritesheet('monster', 'images/monster.png', 42, 33);
+      this.load.spritesheet('monster0', 'images/monster0.png', 42, 33);
+      this.load.spritesheet('monster1', 'images/monster1.png', 42, 33);
+      this.load.spritesheet('monster2', 'images/monster2.png', 42, 33);
+      this.load.spritesheet('monster3', 'images/monster3.png', 42, 33);
+      this.load.spritesheet('monster4', 'images/monster4.png', 42, 33);
       this.load.image('battery', 'images/battery.png');
       this.load.image('dead-battery', 'images/dead-battery.png');
       this.load.spritesheet('apps', 'images/apps.png', 120, 119);

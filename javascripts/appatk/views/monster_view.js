@@ -3,7 +3,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   AppAtk.Views.MonsterView = (function(_super) {
-    var BASE_ROTATION_SPEED, SLOWDOWN_COOLDOWN, SLOWDOWN_RATIO, SPEED_SLOW_MULTIPLIER;
+    var BASE_ROTATION_SPEED, HIT_SCALE, HIT_SPEED, SLOWDOWN_COOLDOWN, SLOWDOWN_RATIO, SPEED_SLOW_MULTIPLIER;
 
     __extends(MonsterView, _super);
 
@@ -15,14 +15,17 @@
 
     SLOWDOWN_COOLDOWN = 1200;
 
+    HIT_SPEED = 100;
+
+    HIT_SCALE = 0.7;
+
     function MonsterView(game, x, y, monster) {
       this.monster = monster;
-      MonsterView.__super__.constructor.call(this, game, x, y, 'monster');
+      MonsterView.__super__.constructor.call(this, game, x, y, this.monster.get('image'));
       this.health = this.monster.get('hp');
       this.anchor.setTo(0.5, 0.5);
       this.animations.add('walk', [0, 1, 2, 3, 3, 2, 1, 0, 6, 5, 4, 5, 6], 6, true);
       this.animations.play('walk');
-      this.tint = this.monster.get('tint');
       this.scale = new Phaser.Point(this.monster.get('scale'), this.monster.get('scale'));
       this.events.onKilled.add((function(_this) {
         return function() {
@@ -73,7 +76,21 @@
       var emitter;
       this.monsterTween.stop();
       AppAtk.trigger('monster-killed', this.monster.get('loot'));
-      emitter = new AppAtk.Views.MonsterDeath(game, this.x, this.y, this.tint);
+      emitter = new AppAtk.Views.MonsterParticles(game, this.x, this.y, this.monster.get('tint'));
+      return game.add.existing(emitter);
+    };
+
+    MonsterView.prototype.damage = function() {
+      var emitter;
+      MonsterView.__super__.damage.apply(this, arguments);
+      game.add.tween(this.scale).to({
+        x: HIT_SCALE,
+        y: HIT_SCALE
+      }, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).to({
+        x: 1,
+        y: 1
+      }, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).start();
+      emitter = new AppAtk.Views.MonsterParticles(game, this.x, this.y, this.monster.get('tint'), 15, 250);
       return game.add.existing(emitter);
     };
 
