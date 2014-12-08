@@ -1,7 +1,6 @@
 class AppAtk.Views.Shop
 
   constructor: (@game, @shops = AppAtk.Models.shops) ->
-    game.load.spritesheet('apps', 'images/apps.png' ,120, 119)
     @locations = []
     for i in [0...@shops.length]
       @locations.push(
