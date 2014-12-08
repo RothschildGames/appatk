@@ -8,8 +8,6 @@
 - Better Bullets
 
 # NEED TO DO (non game related)
-- Facebook Open Graph tags YB
-- Favicon + Mobile Favicon YB
 - Test on Mobile
 - Readme for repo (change repo name as well?). SD
 

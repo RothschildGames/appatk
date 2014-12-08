@@ -1,6 +1,6 @@
 class AppAtk.Sfx
 
-  music: 'RinbackTone.ogg'
+  music: ['sfx/RinbackTone.ogg', 'sfx/RinbackTone.mp3', 'sfx/RinbackTone.m4a']
 
   soundsSources:
     hit: ['Jump8', 'Jump15', 'Jump17']
@@ -17,7 +17,7 @@ class AppAtk.Sfx
         soundObjects.push soundKey
       @sounds[key] = soundObjects
 
-    game.load.audio('bgmusic', "sfx/#{@music}")
+    game.load.audio('bgmusic', @music)
 
   start: ->
     AppAtk.on('monster-killed', (monster) => @play('killMonster') )
