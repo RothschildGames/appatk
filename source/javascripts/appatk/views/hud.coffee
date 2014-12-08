@@ -1,6 +1,6 @@
 class AppAtk.Views.HUD
   constructor: (@game, @gameState) ->
-    game.load.image('battery', '/images/battery.png')
+    game.load.image('battery', 'images/battery.png')
 
   create: ->
     @waveShapes = []
