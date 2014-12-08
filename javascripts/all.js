@@ -92179,87 +92179,14 @@ Phaser.Physics.P2.RevoluteConstraint = function (world, bodyA, pivotA, bodyB, pi
 
 Phaser.Physics.P2.RevoluteConstraint.prototype = Object.create(p2.RevoluteConstraint.prototype);
 Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.RevoluteConstraint;
-(function() {
-  var game;
 
-  game = new Phaser.Game(250 * 3, 445 * 3, Phaser.CANVAS, 'drawing-canvas', {
-    init: function() {
-      return game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
-    },
-    preload: function() {
-      game.load.image('background', 'images/bg.png');
-      game.load.image('death-particle', 'images/death-particle.png');
-      game.load.spritesheet('monster', 'images/monster.png', 42, 33);
-      this.sfx = new AppAtk.Sfx(game);
-      this.gameState = new AppAtk.Models.GameState();
-      this.hud = new AppAtk.Views.HUD(game, this.gameState);
-      this.shop = new AppAtk.Views.Shop(game);
-      this.waves = AppAtk.Models.waves;
-      return AppAtk.gameState = this.gameState;
-    },
-    create: function() {
-      var bg, homeButton, notification;
-      bg = game.add.sprite(0, 0, 'background');
-      this.sfx.start();
-      this.hud.create();
-      this.shop.create();
-      this.structure = new AppAtk.Models.Structure();
-      game.structure = this.structure;
-      this.wave = new AppAtk.Views.WaveGroup(game, 0, 0);
-      game.wave = this.wave;
-      notification = new AppAtk.Views.Notification(game);
-      game.notification = notification;
-      homeButton = document.getElementById('home-button');
-      homeButton.onclick = (function(_this) {
-        return function() {
-          return _this._nextWave();
-        };
-      })(this);
-      game.notification.showNotification('Next wave in 2 seconds');
-      setTimeout(((function(_this) {
-        return function() {
-          return _this._generateWave();
-        };
-      })(this)), 2000);
-      AppAtk.on('end-wave', (function(_this) {
-        return function() {
-          return _this._endWave();
-        };
-      })(this));
-      return AppAtk.gameState.on('change:lowHealth', (function(_this) {
-        return function() {
-          if (AppAtk.gameState.get('lowHealth')) {
-            return game.notification.showNotification("Low Battery, be careful!", 600);
-          }
-        };
-      })(this));
-    },
-    _endWave: function() {
-      var message;
-      message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';
-      game.notification.showNotification("" + message + " Next wave in 3 seconds");
-      return setTimeout(((function(_this) {
-        return function() {
-          return _this._nextWave();
-        };
-      })(this)), 3000);
-    },
-    _nextWave: function() {
-      this.gameState.waveUp();
-      return this._generateWave();
-    },
-    _generateWave: function() {
-      var wave, wavePath;
-      wavePath = this.structure.generateWavePath();
-      wave = this.waves.at(this.gameState.get('wave') - 1);
-      wave.set('path', wavePath);
-      return this.wave.startWave(wave);
-    }
-  });
 
-  window.game = game;
 
-}).call(this);
+
+
+
+
+_.extend(AppAtk, Backbone.Events);
 (function() {
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -92626,6 +92553,169 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
 
 }).call(this);
 (function() {
+  AppAtk.Boot = (function() {
+    function Boot() {}
+
+    Boot.prototype.init = function() {
+      this.input.maxPointers = 1;
+      return this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+    };
+
+    Boot.prototype.preload = function() {
+      return this.load.image('loading-background', 'images/loading-background.png');
+    };
+
+    Boot.prototype.create = function() {
+      return this.state.start('loader');
+    };
+
+    return Boot;
+
+  })();
+
+}).call(this);
+(function() {
+  AppAtk.Game = (function() {
+    function Game() {}
+
+    Game.prototype.preload = function() {
+      this.gameState = new AppAtk.Models.GameState();
+      this.shop = new AppAtk.Views.Shop(game);
+      this.waves = AppAtk.Models.waves;
+      this.hud = new AppAtk.Views.HUD(this, this.gameState);
+      return AppAtk.gameState = this.gameState;
+    };
+
+    Game.prototype.create = function() {
+      var bg, homeButton, notification;
+      bg = game.add.sprite(0, 0, 'background');
+      AppAtk.sfx.start();
+      this.hud.create();
+      this.shop.create();
+      this.structure = new AppAtk.Models.Structure();
+      game.structure = this.structure;
+      this.wave = new AppAtk.Views.WaveGroup(game, 0, 0);
+      game.wave = this.wave;
+      notification = new AppAtk.Views.Notification(game);
+      game.notification = notification;
+      homeButton = document.getElementById('home-button');
+      homeButton.onclick = (function(_this) {
+        return function() {
+          return _this._nextWave();
+        };
+      })(this);
+      game.notification.showNotification('Next wave in 2 seconds');
+      setTimeout(((function(_this) {
+        return function() {
+          return _this._generateWave();
+        };
+      })(this)), 2000);
+      AppAtk.on('end-wave', (function(_this) {
+        return function() {
+          return _this._endWave();
+        };
+      })(this));
+      return AppAtk.gameState.on('change:lowHealth', (function(_this) {
+        return function() {
+          if (AppAtk.gameState.get('lowHealth')) {
+            return game.notification.showNotification("Low Battery, be careful!", 600);
+          }
+        };
+      })(this));
+    };
+
+    Game.prototype._endWave = function() {
+      var message;
+      message = this.wave.killed > this.wave.missed ? 'Great job!' : 'Let\'s do better next time.';
+      game.notification.showNotification("" + message + " Next wave in 3 seconds");
+      return setTimeout(((function(_this) {
+        return function() {
+          return _this._nextWave();
+        };
+      })(this)), 3000);
+    };
+
+    Game.prototype._nextWave = function() {
+      this.gameState.waveUp();
+      return this._generateWave();
+    };
+
+    Game.prototype._generateWave = function() {
+      var wave, wavePath;
+      wavePath = this.structure.generateWavePath();
+      wave = this.waves.at(this.gameState.get('wave') - 1);
+      wave.set('path', wavePath);
+      return this.wave.startWave(wave);
+    };
+
+    return Game;
+
+  })();
+
+}).call(this);
+(function() {
+  AppAtk.Loader = (function() {
+    function Loader() {}
+
+    Loader.prototype.preload = function() {
+      this._createLoadingUI();
+      return this._loadGameAssets();
+    };
+
+    Loader.prototype._createLoadingUI = function() {
+      var bg, slideText, text;
+      bg = this.add.sprite(0, 0, 'loading-background');
+      text = this.add.text(this.world.centerX, 207, '0%');
+      text.anchor.setTo(0.5, 0.5);
+      text.align = 'center';
+      text.font = 'Helvetica Neue';
+      text.fontSize = 175;
+      text.fontWeight = 100;
+      text.fill = '#FFFFFF';
+      slideText = this.add.text(this.world.centerX, 1170, '> click to start');
+      slideText.anchor.setTo(0.5, 0.5);
+      slideText.alpha = 0;
+      slideText.font = 'Helvetica Neue';
+      slideText.fontSize = 48;
+      slideText.fontWeight = 200;
+      slideText.fill = '#FFFFFF';
+      slideText.inputEnabled = true;
+      slideText.events.onInputDown.add((function(_this) {
+        return function() {
+          if (slideText.alpha > 0) {
+            return game.state.start('game');
+          }
+        };
+      })(this));
+      this.load.onFileComplete.add((function(_this) {
+        return function() {
+          return text.text = "" + _this.load.progress + "%";
+        };
+      })(this));
+      return this.load.onLoadComplete.add((function(_this) {
+        return function() {
+          return _this.add.tween(slideText).to({
+            alpha: 0.8
+          }, 200).start();
+        };
+      })(this));
+    };
+
+    Loader.prototype._loadGameAssets = function() {
+      this.load.image('background', 'images/bg.png');
+      this.load.image('death-particle', 'images/death-particle.png');
+      this.load.spritesheet('monster', 'images/monster.png', 42, 33);
+      this.load.image('battery', 'images/battery.png');
+      this.load.spritesheet('apps', 'images/apps.png', 120, 119);
+      return AppAtk.sfx = new AppAtk.Sfx(this);
+    };
+
+    return Loader;
+
+  })();
+
+}).call(this);
+(function() {
   AppAtk.Utils.Coords = (function() {
     var i, j, _i, _j;
 
@@ -92775,7 +92865,6 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       this.renderWave = __bind(this.renderWave, this);
       this.renderHealth = __bind(this.renderHealth, this);
       this.renderScore = __bind(this.renderScore, this);
-      game.load.image('battery', 'images/battery.png');
     }
 
     HUD.prototype.create = function() {
@@ -93116,7 +93205,6 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       var i, _i, _ref;
       this.game = game;
       this.shops = shops != null ? shops : AppAtk.Models.shops;
-      game.load.spritesheet('apps', 'images/apps.png', 120, 119);
       this.locations = [];
       for (i = _i = 0, _ref = this.shops.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
         this.locations.push({
@@ -93509,9 +93597,19 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
   })(Phaser.Group);
 
 }).call(this);
+(function() {
+  var game;
 
+  game = new Phaser.Game(250 * 3, 445 * 3, Phaser.CANVAS, 'drawing-canvas');
 
+  game.state.add('boot', new AppAtk.Boot());
 
+  game.state.add('loader', new AppAtk.Loader());
 
+  game.state.add('game', new AppAtk.Game());
 
-_.extend(AppAtk, Backbone.Events);
+  game.state.start('boot');
+
+  window.game = game;
+
+}).call(this);
