@@ -34,7 +34,7 @@ class AppAtk.Views.Notification extends Phaser.Graphics
     @notificationText = text
     @y = -@height
 
-  showNotification: (message= "Next wave in 30s", delay = 1400,  cb= ->) ->
+  showNotification: (message= "Next wave in 30s", delay = 1800,  cb= ->) ->
     @notificationText.text = message
     tween = @game.add.tween(@)
       .to({y: 0}, 500, Phaser.Easing.Quadratic.Out)
