@@ -29,6 +29,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       g.drawCircle(0, 0, @model.get('radius') * 2)
       @addChild(g)
       @radiusCircle = g
+
     @events.onDragStop.add =>
       location = _.min(AppAtk.Utils.Coords.TOWER_LOCATIONS, (loc) => @position.distance(loc))
       @stopEvents()

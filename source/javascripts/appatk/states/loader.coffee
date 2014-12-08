@@ -1,4 +1,5 @@
 class AppAtk.Loader
+  ready: false
 
   preload: ->
     @_createLoadingUI()
@@ -22,19 +23,23 @@ class AppAtk.Loader
     slideText.fontSize = 48
     slideText.fontWeight = 200
     slideText.fill = '#FFFFFF'
-    slideText.inputEnabled = true
-    slideText.events.onInputDown.add =>
-      if slideText.alpha > 0
-        game.state.start('game')
+
+    bg.inputEnabled = true
+    bg.events.onInputDown.add @startGame
 
     @load.onFileComplete.add =>
       text.text = "#{@load.progress}%"
 
     @load.onLoadComplete.add =>
       @add.tween(slideText).to({alpha: 0.8}, 200).start()
+      @ready = true
+
+  startGame: =>
+    @state.start('help') if @ready
 
   _loadGameAssets: ->
     @load.image('background', 'images/bg.png')
+    @load.image('help', 'images/help.png')
     @load.image('death-particle', 'images/death-particle.png')
     @load.spritesheet('monster', 'images/monster.png', 42, 33)
     @load.image('battery', 'images/battery.png')
