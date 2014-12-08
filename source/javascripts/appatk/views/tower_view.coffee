@@ -24,7 +24,6 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       @tweenScale(1, @slow)
 
     @events.onDragStart.add =>
-      # TODO: Remove Radius
       g = @game.add.graphics()
       g.beginFill(0xFFFFFF, 0.2)
       g.drawCircle(0, 0, @model.get('radius') * 2)
@@ -50,7 +49,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
     @game.add.tween(@).to({x: location.x, y: location.y, alpha: 1}, @quick, Phaser.Easing.Linear.None, true)
     @tweenScale(1, @quick).onComplete.add =>
       @game.add.tween(@radiusCircle.scale).to({x: 0, y: 0}, 1200, Phaser.Easing.Bounce.Out, true, 2200).onComplete.add =>
-        @radiusCircle.destroy()
+        @startRadiusOnHover()
       @cooldown =>
         @startSeeking()
 
@@ -58,6 +57,9 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
     @game.add.tween(@).to({y: @y + 100}, @quick, Phaser.Easing.Linear.None, true)
     @tweenScale(0).onComplete.add =>
       @destroy()
+
+  startRadiusOnHover: ->
+    @radiusCircle.destroy()
 
   tweenScale: (scale = 1, speed =@quick) ->
     game.add.tween(@scale).to({x: scale, y: scale}, speed, Phaser.Easing.Linear.None, true)
