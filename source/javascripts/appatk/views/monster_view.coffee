@@ -6,6 +6,9 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
   SLOWDOWN_RATIO = 0.8
   SLOWDOWN_COOLDOWN = 1200 #ms
 
+  HIT_SPEED = 100
+  HIT_SCALE = 0.7
+
   constructor: (game, x, y, @monster) ->
     super(game, x, y, @monster.get('image'))
     @health = @monster.get('hp')
@@ -45,7 +48,13 @@ class AppAtk.Views.MonsterView extends Phaser.Sprite
     @monsterTween.stop()
     AppAtk.trigger('monster-killed', @monster.get('loot'))
 
-    emitter = new AppAtk.Views.MonsterDeath(game, @x, @y, @tint)
+    emitter = new AppAtk.Views.MonsterParticles(game, @x, @y, @monster.get('tint'))
+    game.add.existing(emitter)
+
+  damage: ->
+    super
+    game.add.tween(@scale).to({x: HIT_SCALE, y: HIT_SCALE}, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).to({x: 1, y: 1}, HIT_SPEED, Phaser.Easing.Sinusoidal.InOut).start()
+    emitter = new AppAtk.Views.MonsterParticles(game, @x, @y, @monster.get('tint'), 15, 250)
     game.add.existing(emitter)
 
   slowdown: ->
