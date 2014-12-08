@@ -39,11 +39,17 @@
           return _this._endWave();
         };
       })(this));
-      return AppAtk.gameState.on('change:lowHealth', (function(_this) {
+      AppAtk.gameState.on('change:lowHealth', (function(_this) {
         return function() {
           if (AppAtk.gameState.get('lowHealth')) {
             return game.notification.showNotification("Low Battery, be careful!", 600);
           }
+        };
+      })(this));
+      return AppAtk.gameState.on('change:gameOver', (function(_this) {
+        return function() {
+          AppAtk.trigger('game-over');
+          return game.state.start('gameOver');
         };
       })(this));
     };

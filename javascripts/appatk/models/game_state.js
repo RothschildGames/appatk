@@ -13,7 +13,8 @@
       wave: 1,
       health: 100,
       gold: 10,
-      lowHealth: false
+      lowHealth: false,
+      gameOver: false
     };
 
     GameState.prototype.initialize = function() {
@@ -29,7 +30,10 @@
     GameState.prototype._lostLife = function(damage) {
       this.set('health', this.get('health') - damage);
       if (this.get('health') <= 20) {
-        return this.set('lowHealth', true);
+        this.set('lowHealth', true);
+      }
+      if (this.get('health') <= 0) {
+        return this.set('gameOver', true);
       }
     };
 

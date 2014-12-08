@@ -9,6 +9,8 @@
 
   game.state.add('game', new AppAtk.Game());
 
+  game.state.add('gameOver', new AppAtk.GameOver());
+
   game.state.start('boot');
 
   window.game = game;

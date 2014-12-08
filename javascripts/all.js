@@ -92202,7 +92202,8 @@ _.extend(AppAtk, Backbone.Events);
       wave: 1,
       health: 100,
       gold: 10,
-      lowHealth: false
+      lowHealth: false,
+      gameOver: false
     };
 
     GameState.prototype.initialize = function() {
@@ -92218,7 +92219,10 @@ _.extend(AppAtk, Backbone.Events);
     GameState.prototype._lostLife = function(damage) {
       this.set('health', this.get('health') - damage);
       if (this.get('health') <= 20) {
-        return this.set('lowHealth', true);
+        this.set('lowHealth', true);
+      }
+      if (this.get('health') <= 0) {
+        return this.set('gameOver', true);
       }
     };
 
@@ -92615,11 +92619,17 @@ _.extend(AppAtk, Backbone.Events);
           return _this._endWave();
         };
       })(this));
-      return AppAtk.gameState.on('change:lowHealth', (function(_this) {
+      AppAtk.gameState.on('change:lowHealth', (function(_this) {
         return function() {
           if (AppAtk.gameState.get('lowHealth')) {
             return game.notification.showNotification("Low Battery, be careful!", 600);
           }
+        };
+      })(this));
+      return AppAtk.gameState.on('change:gameOver', (function(_this) {
+        return function() {
+          AppAtk.trigger('game-over');
+          return game.state.start('gameOver');
         };
       })(this));
     };
@@ -92649,6 +92659,60 @@ _.extend(AppAtk, Backbone.Events);
     };
 
     return Game;
+
+  })();
+
+}).call(this);
+(function() {
+  AppAtk.GameOver = (function() {
+    function GameOver() {}
+
+    GameOver.prototype.fadeSpeed = 300;
+
+    GameOver.prototype.preload = function() {
+      var bg, deadBattery, slideText, text;
+      bg = this.add.sprite(0, 0, 'background');
+      this.add.tween(bg).to({
+        alpha: 0
+      }, this.fadeSpeed).start();
+      deadBattery = this.add.sprite(this.world.centerX, this.world.centerY, 'dead-battery');
+      deadBattery.alpha = 0;
+      deadBattery.anchor.setTo(.5);
+      this.add.tween(deadBattery).to({
+        alpha: 1
+      }, this.fadeSpeed).start();
+      text = this.add.text(this.world.centerX, this.world.centerY - 100, 'Game Over');
+      text.anchor.setTo(0.5, 1);
+      text.align = 'center';
+      text.font = 'Helvetica Neue';
+      text.fontSize = 125;
+      text.fontWeight = 100;
+      text.fill = '#FFFFFF';
+      slideText = this.add.text(this.world.centerX, 1170, '> click to start');
+      slideText.anchor.setTo(0.5, 0.5);
+      slideText.alpha = 0;
+      slideText.font = 'Helvetica Neue';
+      slideText.fontSize = 48;
+      slideText.fontWeight = 200;
+      slideText.fill = '#FFFFFF';
+      slideText.inputEnabled = true;
+      slideText.events.onInputDown.add((function(_this) {
+        return function() {
+          if (slideText.alpha > 0) {
+            return game.state.start('game');
+          }
+        };
+      })(this));
+      return setTimeout(((function(_this) {
+        return function() {
+          return _this.add.tween(slideText).to({
+            alpha: 0.8
+          }, 200).start();
+        };
+      })(this)), 1200);
+    };
+
+    return GameOver;
 
   })();
 
@@ -92706,6 +92770,7 @@ _.extend(AppAtk, Backbone.Events);
       this.load.image('death-particle', 'images/death-particle.png');
       this.load.spritesheet('monster', 'images/monster.png', 42, 33);
       this.load.image('battery', 'images/battery.png');
+      this.load.image('dead-battery', 'images/dead-battery.png');
       this.load.spritesheet('apps', 'images/apps.png', 120, 119);
       return AppAtk.sfx = new AppAtk.Sfx(this);
     };
@@ -93332,7 +93397,7 @@ _.extend(AppAtk, Backbone.Events);
             x: 0,
             y: 0
           }, 1200, Phaser.Easing.Bounce.Out, true, 2200).onComplete.add(function() {
-            return _this.radiusCircle.destroy();
+            return _this.startRadiusOnHover();
           });
           return _this.cooldown(function() {
             return _this.startSeeking();
@@ -93350,6 +93415,10 @@ _.extend(AppAtk, Backbone.Events);
           return _this.destroy();
         };
       })(this));
+    };
+
+    TowerView.prototype.startRadiusOnHover = function() {
+      return this.radiusCircle.destroy();
     };
 
     TowerView.prototype.tweenScale = function(scale, speed) {
@@ -93607,6 +93676,8 @@ _.extend(AppAtk, Backbone.Events);
   game.state.add('loader', new AppAtk.Loader());
 
   game.state.add('game', new AppAtk.Game());
+
+  game.state.add('gameOver', new AppAtk.GameOver());
 
   game.state.start('boot');
 

@@ -90,7 +90,7 @@
             x: 0,
             y: 0
           }, 1200, Phaser.Easing.Bounce.Out, true, 2200).onComplete.add(function() {
-            return _this.radiusCircle.destroy();
+            return _this.startRadiusOnHover();
           });
           return _this.cooldown(function() {
             return _this.startSeeking();
@@ -108,6 +108,10 @@
           return _this.destroy();
         };
       })(this));
+    };
+
+    TowerView.prototype.startRadiusOnHover = function() {
+      return this.radiusCircle.destroy();
     };
 
     TowerView.prototype.tweenScale = function(scale, speed) {

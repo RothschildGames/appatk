@@ -51,6 +51,7 @@
       this.load.image('death-particle', 'images/death-particle.png');
       this.load.spritesheet('monster', 'images/monster.png', 42, 33);
       this.load.image('battery', 'images/battery.png');
+      this.load.image('dead-battery', 'images/dead-battery.png');
       this.load.spritesheet('apps', 'images/apps.png', 120, 119);
       return AppAtk.sfx = new AppAtk.Sfx(this);
     };
