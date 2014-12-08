@@ -29,7 +29,8 @@ class AppAtk.GameOver
     bg.inputEnabled = true
     bg.events.onInputDown.add =>
       if slideText.alpha > 0
-        game.state.start('game')
+#        game.state.start('game')
+        window.location.reload()
 
     setTimeout(
       (=> @add.tween(slideText).to({alpha: 0.8}, 200).start())

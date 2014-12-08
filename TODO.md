@@ -1,8 +1,5 @@
-# MUST HAVE
-- You won screen - SD.
-- Restart is buggy when you install a tower.
-
 # NICE TO HAVE
+- Restart is buggy when you install a tower (currently replaced game state change with page reload :|).
 - Make mobile work (fonts need tweaking, drag-and-drop).
 - Different tower icons.
 - Different bullets for each tower.
