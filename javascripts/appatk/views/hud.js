@@ -58,7 +58,7 @@
       percent = Math.min(Math.max(0, parseInt(this.gameState.get('health'))), 100);
       this.healthText.text = "" + percent + "%";
       this.batteryFill.scale.x = percent / 100;
-      if (percent <= 20) {
+      if (this.gameState.get('lowHealth')) {
         this.batteryFill.tint = 0xff3b30;
       } else {
         this.batteryFill.tint = 0xffffff;

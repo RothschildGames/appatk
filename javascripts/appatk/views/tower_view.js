@@ -42,6 +42,16 @@
           return _this.tweenScale(1, _this.slow);
         };
       })(this));
+      this.events.onDragStart.add((function(_this) {
+        return function() {
+          var g;
+          g = _this.game.add.graphics();
+          g.beginFill(0xFFFFFF, 0.2);
+          g.drawCircle(0, 0, _this.model.get('radius') * 2);
+          _this.addChild(g);
+          return _this.radiusCircle = g;
+        };
+      })(this));
       this.events.onDragStop.add((function(_this) {
         return function() {
           var location;
@@ -76,6 +86,12 @@
       }, this.quick, Phaser.Easing.Linear.None, true);
       return this.tweenScale(1, this.quick).onComplete.add((function(_this) {
         return function() {
+          _this.game.add.tween(_this.radiusCircle.scale).to({
+            x: 0,
+            y: 0
+          }, 1200, Phaser.Easing.Bounce.Out, true, 2200).onComplete.add(function() {
+            return _this.radiusCircle.destroy();
+          });
           return _this.cooldown(function() {
             return _this.startSeeking();
           });

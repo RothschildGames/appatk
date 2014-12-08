@@ -13,6 +13,8 @@
       this.drawRect(0, 0, game.width, 128);
       this.beginFill(0xffcc00, 1);
       this.drawRoundedRect(30, 15, 40, 40, 5);
+      this.beginFill(0x757378, 1);
+      this.drawRoundedRect((game.width - 74) / 2, 110, 74, 10, 7);
       game.add.existing(this);
       text = this.game.add.text(92, 18, 'AppAtk');
       text.font = 'Helvetica Neue';
@@ -36,10 +38,13 @@
       this.y = -this.height;
     }
 
-    Notification.prototype.showNotification = function(message, cb) {
+    Notification.prototype.showNotification = function(message, delay, cb) {
       var tween;
       if (message == null) {
         message = "Next wave in 30s";
+      }
+      if (delay == null) {
+        delay = 1400;
       }
       if (cb == null) {
         cb = function() {};
@@ -49,7 +54,7 @@
         y: 0
       }, 500, Phaser.Easing.Quadratic.Out).to({
         y: -this.height
-      }, 200, Phaser.Easing.Quadratic.In, false, 1400);
+      }, 200, Phaser.Easing.Quadratic.In, false, delay);
       tween.onComplete.add(cb);
       return tween.start();
     };

@@ -12,7 +12,8 @@
     GameState.prototype.defaults = {
       wave: 1,
       health: 100,
-      gold: 10
+      gold: 10,
+      lowHealth: false
     };
 
     GameState.prototype.initialize = function() {
@@ -26,7 +27,10 @@
     };
 
     GameState.prototype._lostLife = function(damage) {
-      return this.set('health', this.get('health') - damage);
+      this.set('health', this.get('health') - damage);
+      if (this.get('health') <= 20) {
+        return this.set('lowHealth', true);
+      }
     };
 
     GameState.prototype._gotLoot = function(loot) {

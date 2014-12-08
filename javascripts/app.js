@@ -40,9 +40,16 @@
           return _this._generateWave();
         };
       })(this)), 2000);
-      return AppAtk.on('end-wave', (function(_this) {
+      AppAtk.on('end-wave', (function(_this) {
         return function() {
           return _this._endWave();
+        };
+      })(this));
+      return AppAtk.gameState.on('change:lowHealth', (function(_this) {
+        return function() {
+          if (AppAtk.gameState.get('lowHealth')) {
+            return game.notification.showNotification("Low Battery, be careful!", 600);
+          }
         };
       })(this));
     },

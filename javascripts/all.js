@@ -92221,9 +92221,16 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
           return _this._generateWave();
         };
       })(this)), 2000);
-      return AppAtk.on('end-wave', (function(_this) {
+      AppAtk.on('end-wave', (function(_this) {
         return function() {
           return _this._endWave();
+        };
+      })(this));
+      return AppAtk.gameState.on('change:lowHealth', (function(_this) {
+        return function() {
+          if (AppAtk.gameState.get('lowHealth')) {
+            return game.notification.showNotification("Low Battery, be careful!", 600);
+          }
         };
       })(this));
     },
@@ -92267,7 +92274,8 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
     GameState.prototype.defaults = {
       wave: 1,
       health: 100,
-      gold: 10
+      gold: 10,
+      lowHealth: false
     };
 
     GameState.prototype.initialize = function() {
@@ -92281,7 +92289,10 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
     };
 
     GameState.prototype._lostLife = function(damage) {
-      return this.set('health', this.get('health') - damage);
+      this.set('health', this.get('health') - damage);
+      if (this.get('health') <= 20) {
+        return this.set('lowHealth', true);
+      }
     };
 
     GameState.prototype._gotLoot = function(loot) {
@@ -92814,7 +92825,7 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       percent = Math.min(Math.max(0, parseInt(this.gameState.get('health'))), 100);
       this.healthText.text = "" + percent + "%";
       this.batteryFill.scale.x = percent / 100;
-      if (percent <= 20) {
+      if (this.gameState.get('lowHealth')) {
         this.batteryFill.tint = 0xff3b30;
       } else {
         this.batteryFill.tint = 0xffffff;
@@ -92989,6 +93000,8 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       this.drawRect(0, 0, game.width, 128);
       this.beginFill(0xffcc00, 1);
       this.drawRoundedRect(30, 15, 40, 40, 5);
+      this.beginFill(0x757378, 1);
+      this.drawRoundedRect((game.width - 74) / 2, 110, 74, 10, 7);
       game.add.existing(this);
       text = this.game.add.text(92, 18, 'AppAtk');
       text.font = 'Helvetica Neue';
@@ -93012,10 +93025,13 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       this.y = -this.height;
     }
 
-    Notification.prototype.showNotification = function(message, cb) {
+    Notification.prototype.showNotification = function(message, delay, cb) {
       var tween;
       if (message == null) {
         message = "Next wave in 30s";
+      }
+      if (delay == null) {
+        delay = 1400;
       }
       if (cb == null) {
         cb = function() {};
@@ -93025,7 +93041,7 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
         y: 0
       }, 500, Phaser.Easing.Quadratic.Out).to({
         y: -this.height
-      }, 200, Phaser.Easing.Quadratic.In, false, 1400);
+      }, 200, Phaser.Easing.Quadratic.In, false, delay);
       tween.onComplete.add(cb);
       return tween.start();
     };
@@ -93180,6 +93196,16 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
           return _this.tweenScale(1, _this.slow);
         };
       })(this));
+      this.events.onDragStart.add((function(_this) {
+        return function() {
+          var g;
+          g = _this.game.add.graphics();
+          g.beginFill(0xFFFFFF, 0.2);
+          g.drawCircle(0, 0, _this.model.get('radius') * 2);
+          _this.addChild(g);
+          return _this.radiusCircle = g;
+        };
+      })(this));
       this.events.onDragStop.add((function(_this) {
         return function() {
           var location;
@@ -93214,6 +93240,12 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       }, this.quick, Phaser.Easing.Linear.None, true);
       return this.tweenScale(1, this.quick).onComplete.add((function(_this) {
         return function() {
+          _this.game.add.tween(_this.radiusCircle.scale).to({
+            x: 0,
+            y: 0
+          }, 1200, Phaser.Easing.Bounce.Out, true, 2200).onComplete.add(function() {
+            return _this.radiusCircle.destroy();
+          });
           return _this.cooldown(function() {
             return _this.startSeeking();
           });
