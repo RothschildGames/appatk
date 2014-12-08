@@ -6,9 +6,9 @@
       return game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
     },
     preload: function() {
-      game.load.image('background', '/images/bg.png');
-      game.load.image('death-particle', '/images/death-particle.png');
-      game.load.spritesheet('monster', '/images/monster.png', 42, 33);
+      game.load.image('background', 'images/bg.png');
+      game.load.image('death-particle', 'images/death-particle.png');
+      game.load.spritesheet('monster', 'images/monster.png', 42, 33);
       this.sfx = new AppAtk.Sfx(game);
       this.gameState = new AppAtk.Models.GameState();
       this.hud = new AppAtk.Views.HUD(game, this.gameState);

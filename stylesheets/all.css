@@ -11,7 +11,7 @@ html, body {
 
 /* line 49, /Users/yon/Development/appatk/source/stylesheets/all.css.scss */
 .phone-container {
-  background-image: url("/images/iphone-container.png");
+  background-image: url("../images/iphone-container.png");
   background-size: 100%;
   position: relative;
   margin: 20px auto;

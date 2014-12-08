@@ -4,7 +4,7 @@
       var i, _i, _ref;
       this.game = game;
       this.shops = shops != null ? shops : AppAtk.Models.shops;
-      game.load.spritesheet('apps', '/images/apps.png', 120, 119);
+      game.load.spritesheet('apps', 'images/apps.png', 120, 119);
       this.locations = [];
       for (i = _i = 0, _ref = this.shops.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
         this.locations.push({

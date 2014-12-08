@@ -8,7 +8,7 @@
       this.renderWave = __bind(this.renderWave, this);
       this.renderHealth = __bind(this.renderHealth, this);
       this.renderScore = __bind(this.renderScore, this);
-      game.load.image('battery', '/images/battery.png');
+      game.load.image('battery', 'images/battery.png');
     }
 
     HUD.prototype.create = function() {

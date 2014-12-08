@@ -92187,9 +92187,9 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       return game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
     },
     preload: function() {
-      game.load.image('background', '/images/bg.png');
-      game.load.image('death-particle', '/images/death-particle.png');
-      game.load.spritesheet('monster', '/images/monster.png', 42, 33);
+      game.load.image('background', 'images/bg.png');
+      game.load.image('death-particle', 'images/death-particle.png');
+      game.load.spritesheet('monster', 'images/monster.png', 42, 33);
       this.sfx = new AppAtk.Sfx(game);
       this.gameState = new AppAtk.Models.GameState();
       this.hud = new AppAtk.Views.HUD(game, this.gameState);
@@ -92592,12 +92592,12 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
         for (idx = _i = 0, _len = values.length; _i < _len; idx = ++_i) {
           file = values[idx];
           soundKey = "" + key + idx;
-          game.load.audio(soundKey, "/sfx/" + file + ".wav");
+          game.load.audio(soundKey, "sfx/" + file + ".wav");
           soundObjects.push(soundKey);
         }
         this.sounds[key] = soundObjects;
       }
-      game.load.audio('bgmusic', "/sfx/" + this.music);
+      game.load.audio('bgmusic', "sfx/" + this.music);
     }
 
     Sfx.prototype.start = function() {
@@ -92775,7 +92775,7 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       this.renderWave = __bind(this.renderWave, this);
       this.renderHealth = __bind(this.renderHealth, this);
       this.renderScore = __bind(this.renderScore, this);
-      game.load.image('battery', '/images/battery.png');
+      game.load.image('battery', 'images/battery.png');
     }
 
     HUD.prototype.create = function() {
@@ -93116,7 +93116,7 @@ Phaser.Physics.P2.RevoluteConstraint.prototype.constructor = Phaser.Physics.P2.R
       var i, _i, _ref;
       this.game = game;
       this.shops = shops != null ? shops : AppAtk.Models.shops;
-      game.load.spritesheet('apps', '/images/apps.png', 120, 119);
+      game.load.spritesheet('apps', 'images/apps.png', 120, 119);
       this.locations = [];
       for (i = _i = 0, _ref = this.shops.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
         this.locations.push({
