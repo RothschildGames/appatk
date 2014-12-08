@@ -40,8 +40,8 @@ AppAtk.Models.shops = new AppAtk.Models.Shops([
     spriteIdx: 1
     position: 1
 
-    price: 12
-    cooldown: 600
+    price: 14
+    cooldown: 700
     damage: 200
     radius: 180
   },
