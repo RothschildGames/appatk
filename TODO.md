@@ -1,4 +1,5 @@
 - Timer between waves - SD.
+- Work on numbers (wave/monsters/towers) to balance the game
 
 POLISH AND FINAL STUFF
 - Better bullet graphics (different one for each tower?).
