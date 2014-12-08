@@ -1,6 +1,6 @@
 class AppAtk.Views.Bullet extends Phaser.Graphics
 
-  speed: 60
+  speed: 150
 
   constructor: (game, @tower) ->
     super(game, @tower.x, @tower.y)

@@ -2,8 +2,6 @@
 - You won screen - SD.
 - Splash tower should do splash damage + animation - SD.
 - Work on numbers (wave/monsters/towers) to balance the game - SD.
-- Better Bullets - SD.
-- Fire sound - SD.
 - Restart should start wherever you press (Gameover) - SD.
 - Restart is buggy when you install a tower.
 

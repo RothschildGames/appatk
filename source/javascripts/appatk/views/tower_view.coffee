@@ -125,6 +125,7 @@ class AppAtk.Views.TowerView extends Phaser.Sprite
       @startSeeking()
 
   shoot: ->
+    AppAtk.trigger('tower-fired', @model)
     bullet = new AppAtk.Views.Bullet(game, @)
     bullet.shootAt(@target)
     @bounceScale()

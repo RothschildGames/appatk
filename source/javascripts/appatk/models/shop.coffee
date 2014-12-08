@@ -27,9 +27,9 @@ AppAtk.Models.shops = new AppAtk.Models.Shops([
     name: 'Splashy'
     spriteIdx: 1
     position: 1
-    cooldown: 400
+    cooldown: 300
     damage: 100
-    radius: 200
+    radius: 250
     price: 10
   },
   {

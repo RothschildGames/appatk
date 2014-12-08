@@ -7,6 +7,10 @@ class AppAtk.Sfx
     damageMonster: ['monster-hit-1', 'monster-hit-2', 'monster-hit-3']
     loseHealth: ['lose-1', 'lose-2', 'lose-3']
     install: ['install-01']
+    Splashy: ['splashy']
+    Shooty: ['shooty']
+    Slowey: ['slowy']
+    Snipey: ['snipey']
   sounds: {}
 
   constructor: (@game) ->
@@ -25,6 +29,7 @@ class AppAtk.Sfx
     AppAtk.on('monster-killed', (monster) => @play('killMonster') )
     AppAtk.on('lost-life', => @play('loseHealth') )
     AppAtk.on('installed-tower', => @play('install') )
+    AppAtk.on('tower-fired', (tower) => @play(tower.get('name')) )
 
   start: ->
     @game.add.audio('bgmusic', 0.25, true).play() unless @playingMusic
