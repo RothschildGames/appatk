@@ -10,6 +10,7 @@ class AppAtk.Sfx
   sounds: {}
 
   constructor: (@game) ->
+    @playingMusic = false
     for key, values of @soundsSources
       soundObjects = []
       for file, idx in values
@@ -20,12 +21,14 @@ class AppAtk.Sfx
 
     game.load.audio('bgmusic', "/sfx/#{@music}")
 
-  start: ->
     AppAtk.on('monster-hit', (monster) => @play('damageMonster') )
     AppAtk.on('monster-killed', (monster) => @play('killMonster') )
     AppAtk.on('lost-life', => @play('loseHealth') )
     AppAtk.on('installed-tower', => @play('install') )
-    @game.add.audio('bgmusic', 0.25, true).play()
+
+  start: ->
+    @game.add.audio('bgmusic', 0.25, true).play() unless @playingMusic
+    @playingMusic = true
 
   play: (key) ->
     soundKey = _.sample(@sounds[key])

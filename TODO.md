@@ -4,6 +4,8 @@
 - Work on numbers (wave/monsters/towers) to balance the game - SD.
 - Better Bullets - SD.
 - Fire sound - SD.
+- Restart should start wherever you press (Gameover) - SD.
+- Restart is buggy when you install a tower.
 
 # NEED TO DO (non game related)
 - Test on Mobile - SD.
