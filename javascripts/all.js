@@ -92517,7 +92517,7 @@ _.extend(AppAtk, Backbone.Events);
       killMonster: ['coin-01', 'coin-02', 'coin-03', 'coin-04'],
       damageMonster: ['monster-hit-1', 'monster-hit-2', 'monster-hit-3'],
       loseHealth: ['lose-1', 'lose-2', 'lose-3'],
-      install: ['install-01'],
+      install: ['install-01', 'install-02', 'install-03'],
       Splashy: ['splashy'],
       Shooty: ['shooty'],
       Slowey: ['slowy'],
