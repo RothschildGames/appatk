@@ -26,7 +26,7 @@
         for (idx = _i = 0, _len = values.length; _i < _len; idx = ++_i) {
           file = values[idx];
           soundKey = "" + key + idx;
-          game.load.audio(soundKey, "/sfx/" + file + ".wav");
+          game.load.audio(soundKey, "sfx/" + file + ".wav");
           soundObjects.push(soundKey);
         }
         this.sounds[key] = soundObjects;
