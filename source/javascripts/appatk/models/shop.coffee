@@ -23,7 +23,7 @@ AppAtk.Models.shops = new AppAtk.Models.Shops([
     price: 5
     cooldown: 100
     damage: 100
-    radius: 160
+    radius: 170
   },
   {
     name: 'Slowey'
@@ -40,17 +40,17 @@ AppAtk.Models.shops = new AppAtk.Models.Shops([
     spriteIdx: 1
     position: 1
 
-    price: 10
-    cooldown: 400
+    price: 12
+    cooldown: 600
     damage: 200
-    radius: 200
+    radius: 180
   },
   {
     name: 'Snipey'
     spriteIdx: 3
     position: 3
 
-    price: 30
+    price: 35
     cooldown: 750
     damage: 1000
     radius: 400

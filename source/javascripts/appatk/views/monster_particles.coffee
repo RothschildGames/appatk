@@ -8,6 +8,9 @@ class AppAtk.Views.MonsterParticles extends Phaser.Particles.Arcade.Emitter
     @forEach((particle) => particle.tint = color)
     @gravity = 1
     @explode(@lifespan, quantity)
+    @counter = 0
 
   update: ->
+    @counter += 1
     @forEachAlive((particle) => particle.alpha = (particle.lifespan / @lifespan))
+    @kill() if @counter > 100

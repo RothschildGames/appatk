@@ -1,7 +1,7 @@
 class AppAtk.Views.Bullet extends Phaser.Graphics
 
   speed: 150
-  SPLASH_RANGE = 150
+  SPLASH_RANGE = 120
 
   constructor: (game, @tower) ->
     super(game, @tower.x, @tower.y)
@@ -34,5 +34,5 @@ class AppAtk.Views.Bullet extends Phaser.Graphics
     )
     _.each(monstersInRange, (monster) -> monster.damage(damage))
 
-    emitter = new AppAtk.Views.MonsterParticles(game, @x, @y, '0xff0000', 100, 2500)
+    emitter = new AppAtk.Views.MonsterParticles(game, @x, @y, '0xff0000', 50, 1500)
     game.add.existing(emitter)
