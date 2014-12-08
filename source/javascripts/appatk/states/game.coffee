@@ -42,9 +42,12 @@ class AppAtk.Game
     )
 
   _endWave: ->
-    message = if @wave.killed > @wave.missed then 'Great job!' else 'Let\'s do better next time.'
-    game.notification.showNotification("#{message} Next wave in 3 seconds")
-    setTimeout(( => @_nextWave()), 3000)
+    if @gameState.get('wave') == 5
+      game.state.start('victory')
+    else
+      message = if @wave.killed > @wave.missed then 'Great job!' else 'Let\'s do better next time.'
+      game.notification.showNotification("#{message} Next wave in 3 seconds")
+      setTimeout(( => @_nextWave()), 3000)
 
   _nextWave: ->
     @gameState.waveUp()

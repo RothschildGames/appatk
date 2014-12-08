@@ -48,5 +48,6 @@ class AppAtk.Loader
     @load.spritesheet('monster4', 'images/monster4.png', 42, 33)
     @load.image('battery', 'images/battery.png')
     @load.image('dead-battery', 'images/dead-battery.png')
+    @load.image('full-battery', 'images/full-battery.png')
     @load.spritesheet('apps', 'images/apps.png' ,120, 119)
     AppAtk.sfx = new AppAtk.Sfx(@)

@@ -5,6 +5,7 @@ game.state.add('loader', new AppAtk.Loader())
 game.state.add('help', new AppAtk.Help())
 game.state.add('game', new AppAtk.Game())
 game.state.add('gameOver', new AppAtk.GameOver())
+game.state.add('victory', new AppAtk.Victory())
 
 game.state.start('boot')
 
